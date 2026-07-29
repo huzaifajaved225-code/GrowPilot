@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -69,23 +73,29 @@ export default function DashboardPage() {
 
             <div className="mb-5 flex items-center gap-4">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500 text-2xl font-bold text-slate-950 shadow-lg">
-                GP
-              </div>
+  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white p-2 shadow-lg">
+    <Image
+      src="/logo.png"
+      alt="GrowPilot Logo"
+      width={56}
+      height={56}
+      className="object-contain"
+      priority
+    />
+  </div>
 
-              <div>
-                <h1 className="text-4xl font-bold text-white">
-                  Welcome to GrowPilot
-                </h1>
+  <div>
+    <h1 className="text-4xl font-bold text-white">
+      Welcome to GrowPilot
+    </h1>
 
-                <p className="mt-2 text-slate-400">
-                  Create your first project and start using AI-powered
-                  SEO, GEO, AEO, Content Generation, Analytics and
-                  Business Automation.
-                </p>
-              </div>
+    <p className="mt-2 text-slate-400">
+      Create your first project and start using AI-powered SEO, GEO, AEO,
+      Content Generation, Analytics and Business Automation.
+    </p>
+  </div>
 
-            </div>
+</div>
 
             <div className="mt-8 flex flex-wrap gap-4">
 
@@ -134,6 +144,8 @@ export default function DashboardPage() {
 
       </section>
 
+
+</div>
       {/* AI Tools */}
 
       <section>

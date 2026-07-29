@@ -38,9 +38,20 @@ export default function DashboardLayout({
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <h1 className="mb-8 text-3xl font-bold text-cyan-400">
-          🚀 GrowPilot
-        </h1>
+        <div className="mb-8 flex items-center gap-3">
+  <Image
+    src="/logo.png"
+    alt="GrowPilot Logo"
+    width={48}
+    height={48}
+    className="object-contain"
+    priority
+  />
+
+  <h1 className="text-3xl font-bold text-cyan-400">
+    GrowPilot
+  </h1>
+</div>
 
         <nav className="space-y-2">
           {menu.map((item) => (

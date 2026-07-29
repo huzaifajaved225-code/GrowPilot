@@ -1,3 +1,8 @@
+"use client";
+
+import Image from "next/image";
+import{useState} from "react";
+import Link from "next/link";
 export default function SEOPage() {
   return (
     <main className="space-y-8">
@@ -69,9 +74,14 @@ export default function SEOPage() {
             />
           </div>
 
-          <button className="mt-2 rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-slate-950 hover:bg-cyan-400">
-            🚀 Run SEO Audit
-          </button>
+          <Image
+  src="/logo.png"
+  alt="GrowPilot Logo"
+  width={48}
+  height={48}
+  className="object-contain"
+  priority
+/>
 
         </div>
 

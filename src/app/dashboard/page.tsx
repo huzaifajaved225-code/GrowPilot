@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import Image from "next/image";
 
@@ -28,92 +28,39 @@ export default function DashboardPage() {
     { title: "Content", value: "0", color: "text-blue-400" },
   ];
 
-  const tools = [
-  {
-    title: "SEO Agent",
-    description: "Analyze and optimize your website.",
-    href: "/dashboard/seo",
-    icon: <Search className="h-8 w-8 text-cyan-400" />,
-  },
-  {
-    title: "GEO Agent",
-    description: "Optimize for AI search engines.",
-    href: "/dashboard/geo",
-    icon: <Globe className="h-8 w-8 text-green-400" />,
-  },
-  {
-    title: "AEO Agent",
-    description: "Optimize for Answer Engines.",
-    href: "/dashboard/aeo",
-    icon: <Sparkles className="h-8 w-8 text-purple-400" />,
-  },
-  {
-    title: "Content AI",
-    description: "Generate blogs and marketing content.",
-    href: "/dashboard/content",
-    icon: <FileText className="h-8 w-8 text-pink-400" />,
-  },
-  {
-    title: "Analytics",
-    description: "Track business performance.",
-    href: "/dashboard/analytics",
-    icon: <BarChart3 className="h-8 w-8 text-orange-400" />,
-  },
-  {
-    title: "Projects",
-    description: "Manage all GrowPilot projects.",
-    href: "/dashboard/projects",
-    icon: <FolderKanban className="h-8 w-8 text-blue-400" />,
-  },
-];
 
- const tools = [
-  {
-    title: "SEO Agent",
-    description: "Analyze and optimize your website.",
-    href: "/dashboard/seo",
-    icon: <Search className="h-8 w-8 text-cyan-400" />,
-  },
-  {
-    title: "GEO Agent",
-    description: "Optimize for AI search engines.",
-    href: "/dashboard/geo",
-    icon: <Globe className="h-8 w-8 text-green-400" />,
-  },
-  {
-    title: "AEO Agent",
-    description: "Optimize for Answer Engines.",
-    href: "/dashboard/aeo",
-    icon: <Sparkles className="h-8 w-8 text-purple-400" />,
-  },
-  {
-    title: "Content AI",
-    description: "Generate blogs and marketing content.",
-    href: "/dashboard/content",
-    icon: <FileText className="h-8 w-8 text-pink-400" />,
-  },
-  {
-    title: "Analytics",
-    description: "Track business performance.",
-    href: "/dashboard/analytics",
-    icon: <BarChart3 className="h-8 w-8 text-orange-400" />,
-  },
-  {
-    title: "Projects",
-    description: "Manage all GrowPilot projects.",
-    href: "/dashboard/projects",
-    icon: <FolderKanban className="h-8 w-8 text-blue-400" />,
-  },
-];
+ const runAudit = async () => {
+  if (!website.trim()) {
+    alert("Please enter a website URL");
+    return;
+  }
 
+  setLoading(true);
 
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setAuditResult({
+      website,
+      seoScore: 95,
+      geoScore: 91,
+      aeoScore: 89,
+      status: "Success",
+      message: "AI Audit completed successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <main className="space-y-8">
 
 
       {/* Hero Section */}
 
-     {/* Hero Section */}
+     
 
 <section className="rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-950 to-black p-8">
 
@@ -134,7 +81,8 @@ export default function DashboardPage() {
 
         <h1 className="text-4xl font-bold text-white">
           GrowPilot Dashboard
-        </h1>
+               width={64}
+
 
         <p className="mt-2 text-slate-400">
           AI-Powered SEO, GEO, AEO, Content Automation and Business Growth Platform.

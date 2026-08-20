@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: growpilot-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://growpilot:growpilot@postgres:5432/growpilot?schema=public
+      DIRECT_URL: postgresql://growpilot:growpilot@postgres:5432/growpilot?schema=public
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - growpilot-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: growpilot-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: growpilot
+      POSTGRES_PASSWORD: growpilot
+      POSTGRES_DB: growpilot
+    volumes:
+      - growpilot-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U growpilot -d growpilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - growpilot-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: growpilot-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - growpilot-redis-data:/data
+    networks:
+      - growpilot-network
+
+  studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: growpilot-prisma-studio
+    command: ["npx", "prisma", "studio", "--port", "5555", "--hostname", "0.0.0.0"]
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://growpilot:growpilot@postgres:5432/growpilot?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - growpilot-network
+    profiles:
+      - tools
+
+networks:
+  growpilot-network:
+    driver: bridge
+
+volumes:
+  growpilot-postgres-data:
+  growpilot-redis-data:

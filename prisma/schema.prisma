@@ -1,0 +1,449 @@
+// GrowPilot — Prisma Schema
+// Multi-tenant enterprise SaaS data model (see /docs/architecture/phase-1-foundation.md)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum GlobalRole {
+  USER
+  SUPERADMIN
+}
+
+enum OrgRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Plan {
+  FREE
+  PRO
+  AGENCY
+  ENTERPRISE
+}
+
+enum AuditStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum ContentType {
+  BLOG
+  SOCIAL
+  GBP
+  META
+}
+
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AiEngine {
+  CHATGPT
+  GEMINI
+  PERPLEXITY
+  OTHER
+}
+
+enum SocialPlatform {
+  FACEBOOK
+  INSTAGRAM
+  LINKEDIN
+  X
+  TIKTOK
+}
+
+enum SocialPostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum AnalyticsSource {
+  GA4
+  GSC
+  GBP
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+// ─────────────────────────────────────────────
+// CORE IDENTITY
+// ─────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String    @unique
+  emailVerified   DateTime?
+  image           String?
+  passwordHash    String?
+  globalRole      GlobalRole @default(USER)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  memberships     Membership[]
+  contentPieces   ContentPiece[]
+  auditLogs       AuditLog[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@map("password_reset_tokens")
+}
+
+// ─────────────────────────────────────────────
+// ORGANIZATION / MULTI-TENANCY
+// ─────────────────────────────────────────────
+
+model Organization {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  plan             Plan     @default(FREE)
+  stripeCustomerId String?  @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  memberships   Membership[]
+  projects      Project[]
+  invitations   Invitation[]
+  socialAccounts SocialAccount[]
+  subscription  Subscription?
+  auditLogs     AuditLog[]
+
+  @@map("organizations")
+}
+
+model Membership {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String
+  role           OrgRole  @default(MEMBER)
+  joinedAt       DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@map("memberships")
+}
+
+model Invitation {
+  id             String   @id @default(cuid())
+  organizationId String
+  email          String
+  role           OrgRole  @default(MEMBER)
+  token          String   @unique
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("invitations")
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  organizationId       String             @unique
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus @default(TRIALING)
+  currentPeriodEnd     DateTime
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ─────────────────────────────────────────────
+// PROJECT (client website / brand being managed)
+// ─────────────────────────────────────────────
+
+model Project {
+  id             String    @id @default(cuid())
+  organizationId String
+  name           String
+  websiteUrl     String
+  industry       String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  seoAudits      SeoAudit[]
+  keywords       Keyword[]
+  contentPieces  ContentPiece[]
+  geoInsights    GeoInsight[]
+  aeoQuestions   AeoQuestion[]
+  gbpLocations   GbpLocation[]
+  socialPosts    SocialPost[]
+  analyticsSnaps AnalyticsSnapshot[]
+
+  @@index([organizationId])
+  @@map("projects")
+}
+
+// ─────────────────────────────────────────────
+// SEO
+// ─────────────────────────────────────────────
+
+model SeoAudit {
+  id          String      @id @default(cuid())
+  projectId   String
+  url         String
+  score       Int?
+  issues      Json?
+  status      AuditStatus @default(PENDING)
+  performedAt DateTime    @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, status])
+  @@map("seo_audits")
+}
+
+model Keyword {
+  id            String   @id @default(cuid())
+  projectId     String
+  term          String
+  searchVolume  Int?
+  difficulty    Int?
+  position      Int?
+  trackedAt     DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("keywords")
+}
+
+// ─────────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────────
+
+model ContentPiece {
+  id          String        @id @default(cuid())
+  projectId   String
+  title       String
+  type        ContentType
+  body        String        @db.Text
+  status      ContentStatus @default(DRAFT)
+  aiGenerated Boolean       @default(false)
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy User    @relation(fields: [createdById], references: [id])
+
+  @@index([projectId, status])
+  @@map("content_pieces")
+}
+
+// ─────────────────────────────────────────────
+// GEO / AEO
+// ─────────────────────────────────────────────
+
+model GeoInsight {
+  id              String   @id @default(cuid())
+  projectId       String
+  aiEngine        AiEngine
+  visibilityScore Int?
+  mentions        Json?
+  checkedAt       DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, aiEngine])
+  @@map("geo_insights")
+}
+
+model AeoQuestion {
+  id              String   @id @default(cuid())
+  projectId       String
+  question        String
+  currentAnswer   String?  @db.Text
+  optimizedAnswer String?  @db.Text
+  sourcePage      String?
+  createdAt       DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("aeo_questions")
+}
+
+// ─────────────────────────────────────────────
+// GOOGLE BUSINESS PROFILE
+// ─────────────────────────────────────────────
+
+model GbpLocation {
+  id               String   @id @default(cuid())
+  projectId        String
+  googleLocationId String
+  name             String
+  address          String?
+  rating           Float?
+  reviewCount      Int?
+  syncedAt         DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("gbp_locations")
+}
+
+// ─────────────────────────────────────────────
+// SOCIAL
+// ─────────────────────────────────────────────
+
+model SocialAccount {
+  id               String         @id @default(cuid())
+  organizationId   String
+  platform         SocialPlatform
+  accessTokenEnc   String         @db.Text
+  refreshTokenEnc  String?        @db.Text
+  expiresAt        DateTime?
+  createdAt        DateTime       @default(now())
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  socialPosts  SocialPost[]
+
+  @@index([organizationId])
+  @@map("social_accounts")
+}
+
+model SocialPost {
+  id              String            @id @default(cuid())
+  projectId       String
+  socialAccountId String
+  content         String            @db.Text
+  mediaUrls       Json?
+  scheduledAt     DateTime?
+  status          SocialPostStatus  @default(DRAFT)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  deletedAt       DateTime?
+
+  project       Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, status])
+  @@map("social_posts")
+}
+
+// ─────────────────────────────────────────────
+// ANALYTICS
+// ─────────────────────────────────────────────
+
+model AnalyticsSnapshot {
+  id         String          @id @default(cuid())
+  projectId  String
+  source     AnalyticsSource
+  metrics    Json
+  capturedAt DateTime        @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, source])
+  @@map("analytics_snapshots")
+}
+
+// ─────────────────────────────────────────────
+// AUDIT LOG
+// ─────────────────────────────────────────────
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String?
+  action         String
+  entityType     String
+  entityId       String?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@map("audit_logs")
+}

@@ -1,0 +1,19 @@
+version: "3.9"
+
+# Local development overrides — mounts source for hot reload and runs
+# `npm run dev` instead of the production `node server.js` entrypoint.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    command: sh -c "npm run db:generate && npm run dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      NODE_ENV: development

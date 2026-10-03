@@ -19,15 +19,15 @@ export class AgentError extends AIError {
    */
   constructor(message: string, agentId?: string, details: Metadata = {}, retryable = false) {
     super(
-  message,
-  "AGENT_ERROR",
-  500,
-  {
-    ...(agentId !== undefined ? { agentId } : {}),
-    ...details,
-  },
-  retryable,
-)
+      message,
+      "AGENT_ERROR",
+      500,
+      {
+        ...(agentId !== undefined ? { agentId } : {}),
+        ...details,
+      },
+      retryable,
+    );
     this.agentId = agentId;
   }
 
@@ -53,10 +53,10 @@ export class AgentError extends AIError {
    */
   public static timeout(agentId: string, timeoutMs: number): AgentError {
     return new AgentError(
-  `Agent "${agentId}" exceeded its execution timeout of ${timeoutMs}ms`,
-  agentId,
-  { timeoutMs },
-  true,
-);
+      `Agent "${agentId}" exceeded its execution timeout of ${timeoutMs}ms`,
+      agentId,
+      { timeoutMs },
+      true,
+    );
   }
 }

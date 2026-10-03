@@ -220,6 +220,7 @@ Core entities:
 - **Invitation** — id, organizationId, email, role, token, expiresAt
 
 Design rules:
+
 - Every business table carries `organizationId` for multi-tenant isolation (row-level scoping enforced in repository layer, never trusted from client).
 - Soft deletes (`deletedAt`) on Project, ContentPiece, SocialPost.
 - All monetary/plan logic references `Subscription`, never inferred from `Organization.plan` alone (source of truth = Stripe webhook).
@@ -229,25 +230,25 @@ Design rules:
 
 ## 4. Complete Routing Structure
 
-| Route Group | Purpose | Access |
-|---|---|---|
-| `/(marketing)` | Public landing, pricing, about | Public |
-| `/(auth)/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email` | Auth flows | Public |
-| `/(dashboard)/dashboard` | Org home, KPI overview | Authenticated |
-| `/(dashboard)/seo/*` | Audits, keyword tracking | Authenticated, project-scoped |
-| `/(dashboard)/geo` | Generative Engine Optimization insights | Authenticated |
-| `/(dashboard)/aeo` | Answer Engine Optimization | Authenticated |
-| `/(dashboard)/content/*` | AI content generation & library | Authenticated |
-| `/(dashboard)/analytics` | GA4/GSC dashboards | Authenticated |
-| `/(dashboard)/gbp/*` | Google Business Profile management | Authenticated |
-| `/(dashboard)/social/*` | Social calendar & scheduling | Authenticated |
-| `/(dashboard)/projects/*` | Project (client site) management | Authenticated |
-| `/(dashboard)/team` | Org member management | OWNER/ADMIN |
-| `/(dashboard)/billing` | Subscription management | OWNER |
-| `/(dashboard)/settings/*` | Profile & integrations | Authenticated |
-| `/(admin)/admin/*` | Platform-level admin | SUPERADMIN only |
-| `/api/v1/*` | REST resource endpoints | Session or API-key |
-| `/api/webhooks/*` | Inbound provider webhooks | Signature-verified, no session |
+| Route Group                                                                          | Purpose                                 | Access                         |
+| ------------------------------------------------------------------------------------ | --------------------------------------- | ------------------------------ |
+| `/(marketing)`                                                                       | Public landing, pricing, about          | Public                         |
+| `/(auth)/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email` | Auth flows                              | Public                         |
+| `/(dashboard)/dashboard`                                                             | Org home, KPI overview                  | Authenticated                  |
+| `/(dashboard)/seo/*`                                                                 | Audits, keyword tracking                | Authenticated, project-scoped  |
+| `/(dashboard)/geo`                                                                   | Generative Engine Optimization insights | Authenticated                  |
+| `/(dashboard)/aeo`                                                                   | Answer Engine Optimization              | Authenticated                  |
+| `/(dashboard)/content/*`                                                             | AI content generation & library         | Authenticated                  |
+| `/(dashboard)/analytics`                                                             | GA4/GSC dashboards                      | Authenticated                  |
+| `/(dashboard)/gbp/*`                                                                 | Google Business Profile management      | Authenticated                  |
+| `/(dashboard)/social/*`                                                              | Social calendar & scheduling            | Authenticated                  |
+| `/(dashboard)/projects/*`                                                            | Project (client site) management        | Authenticated                  |
+| `/(dashboard)/team`                                                                  | Org member management                   | OWNER/ADMIN                    |
+| `/(dashboard)/billing`                                                               | Subscription management                 | OWNER                          |
+| `/(dashboard)/settings/*`                                                            | Profile & integrations                  | Authenticated                  |
+| `/(admin)/admin/*`                                                                   | Platform-level admin                    | SUPERADMIN only                |
+| `/api/v1/*`                                                                          | REST resource endpoints                 | Session or API-key             |
+| `/api/webhooks/*`                                                                    | Inbound provider webhooks               | Signature-verified, no session |
 
 Route protection is enforced centrally in `middleware.ts` (session check + role check by path prefix), not per-page.
 

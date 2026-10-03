@@ -88,7 +88,8 @@ export class SchemaAgent extends BaseAgent<SchemaAgentInput, SchemaAgentOutput> 
     input: AgentInput<SchemaAgentInput>,
     context: IExecutionContext,
   ): Promise<SchemaAgentOutput> {
-    const { url, businessType, extractedMetadata, existingSchema, missingInformation } = input.payload;
+    const { url, businessType, extractedMetadata, existingSchema, missingInformation } =
+      input.payload;
 
     const systemPrompt = context.prompts.render(SCHEMA_SYSTEM_PROMPT_KEY, {});
     const userPrompt = context.prompts.render(SCHEMA_USER_PROMPT_KEY, {

@@ -24,12 +24,7 @@ const plans: PricingPlan[] = [
     name: "Free",
     price: "$0",
     description: "For individuals exploring AI-powered growth tools.",
-    features: [
-      "1 project",
-      "Basic SEO audit",
-      "Limited AI queries",
-      "Community support",
-    ],
+    features: ["1 project", "Basic SEO audit", "Limited AI queries", "Community support"],
     highlighted: false,
   },
   {
@@ -72,8 +67,7 @@ export default function PricingPage(): React.JSX.Element {
           Simple, transparent pricing
         </h1>
         <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-          Choose the plan that fits your business. Upgrade or downgrade at any
-          time.
+          Choose the plan that fits your business. Upgrade or downgrade at any time.
         </p>
       </div>
 
@@ -83,18 +77,14 @@ export default function PricingPage(): React.JSX.Element {
             key={plan.name}
             className={
               plan.highlighted
-                ? "relative flex flex-col p-6 border-primary/50"
+                ? "relative flex flex-col border-primary/50 p-6"
                 : "relative flex flex-col p-6"
             }
           >
-            {plan.badge ? (
-              <Badge className="absolute -top-3 right-6">{plan.badge}</Badge>
-            ) : null}
+            {plan.badge ? <Badge className="absolute -top-3 right-6">{plan.badge}</Badge> : null}
             <div className="mb-4">
               <h2 className="font-heading text-xl font-semibold">{plan.name}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {plan.description}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
             </div>
             <div className="mb-6">
               <span className="text-4xl font-bold">{plan.price}</span>
@@ -108,11 +98,7 @@ export default function PricingPage(): React.JSX.Element {
                 </li>
               ))}
             </ul>
-            <Button
-              variant={plan.highlighted ? "default" : "outline"}
-              className="w-full"
-              asChild
-            >
+            <Button variant={plan.highlighted ? "default" : "outline"} className="w-full" asChild>
               <Link href="/login">Get started</Link>
             </Button>
           </Card>
@@ -120,8 +106,8 @@ export default function PricingPage(): React.JSX.Element {
       </div>
 
       <p className="text-center text-sm text-muted-foreground">
-        All plans include access to the {siteConfig.name} AI growth dashboard.
-        Contact us for enterprise pricing.
+        All plans include access to the {siteConfig.name} AI growth dashboard. Contact us for
+        enterprise pricing.
       </p>
     </section>
   );

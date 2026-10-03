@@ -75,27 +75,33 @@ export class MemoryManager implements IMemoryManager {
 
   /** @inheritdoc */
   public session<TValue = unknown>(sessionId: string): ISessionMemory<TValue> {
-    return this.getOrCreate(this.sessionStores, sessionId, () =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic-store cache keyed by string id across differing TValue instantiations
-      new ScopedMemoryStore<any>(
-        this.sessionAdapter,
-        MemoryScope.SESSION,
-        sessionId,
-        this.sessionTtlMs,
-      ),
+    return this.getOrCreate(
+      this.sessionStores,
+      sessionId,
+      () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic-store cache keyed by string id across differing TValue instantiations
+        new ScopedMemoryStore<any>(
+          this.sessionAdapter,
+          MemoryScope.SESSION,
+          sessionId,
+          this.sessionTtlMs,
+        ),
     ) as ISessionMemory<TValue>;
   }
 
   /** @inheritdoc */
   public conversation<TValue = unknown>(conversationId: string): IConversationMemory<TValue> {
-    return this.getOrCreate(this.conversationStores, conversationId, () =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic-store cache keyed by string id across differing TValue instantiations
-      new ScopedMemoryStore<any>(
-        this.conversationAdapter,
-        MemoryScope.CONVERSATION,
-        conversationId,
-        this.conversationTtlMs,
-      ),
+    return this.getOrCreate(
+      this.conversationStores,
+      conversationId,
+      () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic-store cache keyed by string id across differing TValue instantiations
+        new ScopedMemoryStore<any>(
+          this.conversationAdapter,
+          MemoryScope.CONVERSATION,
+          conversationId,
+          this.conversationTtlMs,
+        ),
     ) as IConversationMemory<TValue>;
   }
 

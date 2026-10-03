@@ -4,7 +4,12 @@
  * to classify the website into a Schema.org type.
  */
 
-import type { ExtractedMetadata, ExistingStructuredData, BusinessTypeDetection, SchemaType } from "@/ai-core/tools/schema-builder/types";
+import type {
+  ExtractedMetadata,
+  ExistingStructuredData,
+  BusinessTypeDetection,
+  SchemaType,
+} from "@/ai-core/tools/schema-builder/types";
 
 /**
  * Keyword patterns that strongly indicate each business type.
@@ -37,8 +42,14 @@ export function detectBusinessTypeDeterministic(
     if (schema.valid && schema.schemaType) {
       const normalizedType = schema.schemaType as SchemaType;
       const knownTypes: SchemaType[] = [
-        "Restaurant", "LocalBusiness", "Store", "Organization",
-        "Product", "SoftwareApplication", "Article", "Person",
+        "Restaurant",
+        "LocalBusiness",
+        "Store",
+        "Organization",
+        "Product",
+        "SoftwareApplication",
+        "Article",
+        "Person",
       ];
       if (knownTypes.includes(normalizedType)) {
         return {
@@ -58,7 +69,9 @@ export function detectBusinessTypeDeterministic(
     ...metadata.headings.h1,
     ...metadata.headings.h2,
     metadata.textContent.slice(0, 2000),
-  ].join(" ").toLowerCase();
+  ]
+    .join(" ")
+    .toLowerCase();
 
   let bestType: SchemaType = "Organization";
   let bestScore = 0;

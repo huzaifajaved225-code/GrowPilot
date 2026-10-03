@@ -15,11 +15,7 @@ export class PromptError extends AIError {
    * @param templateKey - The prompt template key associated with this failure.
    * @param details - Arbitrary structured debugging details.
    */
-  constructor(
-    message: string,
-    templateKey?: string,
-    details: Metadata = {},
-  ) {
+  constructor(message: string, templateKey?: string, details: Metadata = {}) {
     super(
       message,
       "PROMPT_ERROR",
@@ -41,12 +37,8 @@ export class PromptError extends AIError {
    * @param version - The requested version, if a specific one was requested.
    * @returns A new `PromptError` with a 404-equivalent status code.
    */
-  public static notFound(
-    templateKey: string,
-    version?: number,
-  ): PromptError {
-    const suffix =
-      version !== undefined ? ` (version ${version})` : "";
+  public static notFound(templateKey: string, version?: number): PromptError {
+    const suffix = version !== undefined ? ` (version ${version})` : "";
 
     const error = new PromptError(
       `Prompt template "${templateKey}"${suffix} was not found`,

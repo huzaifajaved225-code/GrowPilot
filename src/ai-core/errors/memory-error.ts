@@ -20,15 +20,15 @@ export class MemoryError extends AIError {
    */
   constructor(message: string, scope?: MemoryScope, details: Metadata = {}, retryable = true) {
     super(
-  message,
-  "MEMORY_ERROR",
-  500,
-  {
-    ...(scope !== undefined ? { scope } : {}),
-    ...details,
-  },
-  retryable,
-);
+      message,
+      "MEMORY_ERROR",
+      500,
+      {
+        ...(scope !== undefined ? { scope } : {}),
+        ...details,
+      },
+      retryable,
+    );
     this.scope = scope;
   }
 
@@ -40,7 +40,12 @@ export class MemoryError extends AIError {
    * @returns A new, non-retryable `MemoryError`.
    */
   public static adapterNotConfigured(scope: MemoryScope): MemoryError {
-    const error = new MemoryError(`No memory adapter is configured for scope "${scope}"`, scope, {}, false);
+    const error = new MemoryError(
+      `No memory adapter is configured for scope "${scope}"`,
+      scope,
+      {},
+      false,
+    );
     return Object.assign(error, { statusCode: 500 });
   }
 

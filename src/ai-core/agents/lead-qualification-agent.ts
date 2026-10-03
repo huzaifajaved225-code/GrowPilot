@@ -112,11 +112,15 @@ export const LEAD_OUTREACH_USER_KEY = "lead-outreach.user";
  * LeadQualificationAgent — evaluates candidate B2B leads, calculates qualification scores,
  * identifies growth gaps, recommends tailored services, and crafts personalized outreach.
  */
-export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, LeadQualificationOutput> {
+export class LeadQualificationAgent extends BaseAgent<
+  LeadQualificationInput,
+  LeadQualificationOutput
+> {
   public override readonly descriptor: AgentDescriptor = {
     id: "lead-qualification-agent" as AgentId,
     name: "Lead Qualification Agent",
-    description: "Evaluates business leads, assigns scores and statuses, and generates personalized outreach.",
+    description:
+      "Evaluates business leads, assigns scores and statuses, and generates personalized outreach.",
     version: "1.0.0",
     tags: ["leads", "marketing", "qualification", "outreach"],
   };
@@ -135,7 +139,8 @@ export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, Le
     const result = leadQualificationInputSchema.safeParse(input.payload);
     if (!result.success) {
       throw new AgentError(
-        "Invalid LeadQualificationAgent input: " + result.error.issues.map((i) => i.message).join(", "),
+        "Invalid LeadQualificationAgent input: " +
+          result.error.issues.map((i) => i.message).join(", "),
         this.descriptor.id,
         { code: "VALIDATION_ERROR" },
         false,
@@ -147,7 +152,8 @@ export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, Le
     input: AgentInput<LeadQualificationInput>,
     context: IExecutionContext,
   ): Promise<LeadQualificationOutput> {
-    const { businessName, industry, location, targetCustomer, website, description } = input.payload;
+    const { businessName, industry, location, targetCustomer, website, description } =
+      input.payload;
 
     let systemPromptContent =
       "You are GrowPilot's expert B2B Lead Qualification & Growth Specialist. " +
@@ -228,12 +234,23 @@ export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, Le
       );
     }
 
-    const { businessName, industry, location, opportunity, recommendedService, channel, senderName } = payload;
+    const {
+      businessName,
+      industry,
+      location,
+      opportunity,
+      recommendedService,
+      channel,
+      senderName,
+    } = payload;
 
     const channelGuidelines = {
-      email: "Write a high-converting, professional cold email. Include a compelling subject line and 3-4 sentence message with a clear low-friction call-to-action.",
-      whatsapp: "Write a concise, friendly WhatsApp message (under 60 words). No subject line needed. Respectful, professional, directly addressing the opportunity.",
-      general: "Write a versatile B2B direct message (LinkedIn / outreach). Include an optional headline/subject and a concise, high-impact value proposition.",
+      email:
+        "Write a high-converting, professional cold email. Include a compelling subject line and 3-4 sentence message with a clear low-friction call-to-action.",
+      whatsapp:
+        "Write a concise, friendly WhatsApp message (under 60 words). No subject line needed. Respectful, professional, directly addressing the opportunity.",
+      general:
+        "Write a versatile B2B direct message (LinkedIn / outreach). Include an optional headline/subject and a concise, high-impact value proposition.",
     }[channel];
 
     const systemPrompt =
@@ -250,7 +267,9 @@ export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, Le
       `Location: ${location}\n` +
       `Identified Opportunity: ${opportunity}\n` +
       `Recommended Solution: ${recommendedService}\n` +
-      (senderName ? `Sender: ${senderName} from GrowPilot\n` : "Sender: GrowPilot Growth Consultant\n") +
+      (senderName
+        ? `Sender: ${senderName} from GrowPilot\n`
+        : "Sender: GrowPilot Growth Consultant\n") +
       `\nRequired JSON format:\n` +
       `{\n` +
       `  "channel": "${channel}",\n` +
@@ -330,7 +349,10 @@ export class LeadQualificationAgent extends BaseAgent<LeadQualificationInput, Le
     };
   }
 
-  private parseOutreachResponse(rawText: string, expectedChannel: OutreachChannel): LeadOutreachOutput {
+  private parseOutreachResponse(
+    rawText: string,
+    expectedChannel: OutreachChannel,
+  ): LeadOutreachOutput {
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       // Fallback if raw text returned

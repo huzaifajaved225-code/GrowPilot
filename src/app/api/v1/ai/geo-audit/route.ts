@@ -21,7 +21,13 @@ const geoAuditRequestSchema = z.object({
   focusAreas: z
     .array(z.string().min(1))
     .min(1, "At least one focus area is required")
-    .default(["ai-visibility", "entity-understanding", "content-authority", "citations", "structured-data"]),
+    .default([
+      "ai-visibility",
+      "entity-understanding",
+      "content-authority",
+      "citations",
+      "structured-data",
+    ]),
   businessName: z.string().min(1).optional(),
 });
 

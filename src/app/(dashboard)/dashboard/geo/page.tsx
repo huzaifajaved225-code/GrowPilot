@@ -38,12 +38,10 @@ export default async function GeoAuditPage(): Promise<React.JSX.Element> {
           <Globe className="h-4 w-4" />
           GEO Audit
         </div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          GEO Audit
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">GEO Audit</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Evaluate how well your website is optimized for AI-generated answers
-          and generative search engines.
+          Evaluate how well your website is optimized for AI-generated answers and generative search
+          engines.
         </p>
       </div>
 

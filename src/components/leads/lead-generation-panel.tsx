@@ -59,7 +59,9 @@ interface LeadGenerationPanelProps {
   userEmail?: string | null;
 }
 
-export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPanelProps): React.JSX.Element {
+export function LeadGenerationPanel({
+  userEmail: _userEmail,
+}: LeadGenerationPanelProps): React.JSX.Element {
   // Generator form state
   const [industry, setIndustry] = React.useState("Digital Marketing Agency");
   const [location, setLocation] = React.useState("Karachi, Pakistan");
@@ -82,7 +84,9 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
 
   // Outreach modal state
   const [activeOutreachLead, setActiveOutreachLead] = React.useState<LeadItem | null>(null);
-  const [outreachChannel, setOutreachChannel] = React.useState<"email" | "whatsapp" | "general">("email");
+  const [outreachChannel, setOutreachChannel] = React.useState<"email" | "whatsapp" | "general">(
+    "email",
+  );
   const [isGeneratingOutreach, setIsGeneratingOutreach] = React.useState(false);
   const [outreachSubject, setOutreachSubject] = React.useState<string>("");
   const [outreachMessage, setOutreachMessage] = React.useState<string>("");
@@ -160,7 +164,8 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
       setLeads((prev) => [...generated, ...prev]);
       setCurrentPage(1);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "An unexpected error occurred during lead generation.";
+      const msg =
+        err instanceof Error ? err.message : "An unexpected error occurred during lead generation.";
       setErrorMessage(msg);
     } finally {
       setIsGenerating(false);
@@ -185,7 +190,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
   };
 
   // Open outreach modal & generate copy
-  const handleOpenOutreach = async (lead: LeadItem, channel: "email" | "whatsapp" | "general" = "email") => {
+  const handleOpenOutreach = async (
+    lead: LeadItem,
+    channel: "email" | "whatsapp" | "general" = "email",
+  ) => {
     setActiveOutreachLead(lead);
     setOutreachChannel(channel);
     setIsGeneratingOutreach(true);
@@ -220,7 +228,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
         setOutreachMessage(
           `Hi ${lead.businessName} team! I came across your business in ${lead.location}. ` +
             `We noticed an opportunity in ${lead.recommendedService || "digital presence"} that could significantly boost your customer acquisition. ` +
-            `Would you be open to a quick 2-minute overview?`
+            `Would you be open to a quick 2-minute overview?`,
         );
       } else {
         setOutreachSubject(`Growth opportunity for ${lead.businessName}`);
@@ -228,7 +236,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
           `Hi Team,\n\nI was reviewing businesses in the ${lead.industry} space in ${lead.location} and noticed ${lead.businessName}.\n\n` +
             `Opportunity identified: ${lead.opportunity || "Enhancing search ranking and generative engine visibility"}.\n\n` +
             `We help businesses like yours implement ${lead.recommendedService || "tailored growth strategies"} to capture high-intent inquiries.\n\n` +
-            `Are you open to a brief 5-minute chat this week?\n\nBest regards,\nGrowPilot Growth Team`
+            `Are you open to a brief 5-minute chat this week?\n\nBest regards,\nGrowPilot Growth Team`,
         );
       }
     } finally {
@@ -317,14 +325,15 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
           l.businessName.toLowerCase().includes(q) ||
           l.industry.toLowerCase().includes(q) ||
           l.location.toLowerCase().includes(q) ||
-          (l.opportunity && l.opportunity.toLowerCase().includes(q))
+          (l.opportunity && l.opportunity.toLowerCase().includes(q)),
       );
     }
 
     list.sort((a, b) => {
       if (sortBy === "score-desc") return b.score - a.score;
       if (sortBy === "score-asc") return a.score - b.score;
-      if (sortBy === "newest") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (sortBy === "newest")
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       return 0;
     });
 
@@ -349,7 +358,9 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               <Target className="h-4 w-4 text-primary" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-bold tracking-tight text-foreground">{summary.totalLeads}</span>
+              <span className="text-2xl font-bold tracking-tight text-foreground">
+                {summary.totalLeads}
+              </span>
               <span className="text-xs text-muted-foreground">in database</span>
             </div>
           </CardContent>
@@ -400,14 +411,16 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
           </CardContent>
         </Card>
 
-        <Card className="col-span-2 sm:col-span-1 border-border/60 shadow-sm transition-all hover:shadow">
+        <Card className="col-span-2 border-border/60 shadow-sm transition-all hover:shadow sm:col-span-1">
           <CardContent className="p-5">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-semibold uppercase tracking-wider">Average Score</span>
               <TrendingUp className="h-4 w-4 text-emerald-500" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-bold tracking-tight text-foreground">{summary.averageScore}</span>
+              <span className="text-2xl font-bold tracking-tight text-foreground">
+                {summary.averageScore}
+              </span>
               <span className="text-xs text-muted-foreground">/ 100</span>
             </div>
           </CardContent>
@@ -419,12 +432,13 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
         <CardHeader className="border-b border-border/60 bg-muted/20 pb-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
                 <Sparkles className="h-5 w-5 text-primary" />
                 Target Market Discovery
               </CardTitle>
               <CardDescription>
-                Configure your target parameters. GrowPilot AI will discover candidate businesses, evaluate their market viability, and score their lead potential.
+                Configure your target parameters. GrowPilot AI will discover candidate businesses,
+                evaluate their market viability, and score their lead potential.
               </CardDescription>
             </div>
           </div>
@@ -433,7 +447,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
           <form onSubmit={handleGenerate} className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor="industry" className="text-xs font-semibold uppercase text-muted-foreground">
+                <Label
+                  htmlFor="industry"
+                  className="text-xs font-semibold uppercase text-muted-foreground"
+                >
                   Industry / Niche *
                 </Label>
                 <Input
@@ -446,7 +463,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="location" className="text-xs font-semibold uppercase text-muted-foreground">
+                <Label
+                  htmlFor="location"
+                  className="text-xs font-semibold uppercase text-muted-foreground"
+                >
                   Location *
                 </Label>
                 <Input
@@ -459,7 +479,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="targetCustomer" className="text-xs font-semibold uppercase text-muted-foreground">
+                <Label
+                  htmlFor="targetCustomer"
+                  className="text-xs font-semibold uppercase text-muted-foreground"
+                >
                   Target Customer
                 </Label>
                 <Input
@@ -473,7 +496,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="website" className="text-xs font-semibold uppercase text-muted-foreground">
+                <Label
+                  htmlFor="website"
+                  className="text-xs font-semibold uppercase text-muted-foreground"
+                >
                   Reference Website / Competitor (Optional)
                 </Label>
                 <Input
@@ -486,7 +512,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="count" className="text-xs font-semibold uppercase text-muted-foreground">
+                <Label
+                  htmlFor="count"
+                  className="text-xs font-semibold uppercase text-muted-foreground"
+                >
                   Number of Leads
                 </Label>
                 <select
@@ -504,7 +533,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
             </div>
 
             {errorMessage ? (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive font-medium">
+              <div className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">
                 {errorMessage}
               </div>
             ) : null}
@@ -537,13 +566,13 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
         {/* Results Header Controls */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight text-foreground">
               <span>Discovered Leads</span>
               <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
                 {filteredLeads.length}
               </span>
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               Prioritized leads ranked by AI opportunity and qualification score.
             </p>
           </div>
@@ -567,14 +596,16 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               className="h-9 w-9 p-0"
               title="Refresh list"
             >
-              <RefreshCw className={cn("h-4 w-4 text-muted-foreground", isLoading && "animate-spin")} />
+              <RefreshCw
+                className={cn("h-4 w-4 text-muted-foreground", isLoading && "animate-spin")}
+              />
             </Button>
           </div>
         </div>
 
         {/* Filter and Search Bar */}
         <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative max-w-sm flex-1">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               value={searchQuery}
@@ -583,13 +614,13 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                 setCurrentPage(1);
               }}
               placeholder="Search by name, industry, or location..."
-              className="pl-9 h-9 text-sm"
+              className="h-9 pl-9 text-sm"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Status Pills */}
-            <div className="flex items-center rounded-md border border-border p-0.5 bg-muted/40 text-xs">
+            <div className="flex items-center rounded-md border border-border bg-muted/40 p-0.5 text-xs">
               {(["ALL", "HOT", "WARM", "COLD"] as const).map((st) => (
                 <button
                   key={st}
@@ -602,7 +633,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                     "rounded px-2.5 py-1 font-medium transition-colors",
                     statusFilter === st
                       ? "bg-card text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {st === "ALL" ? "All" : st}
@@ -646,7 +677,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
         ) : (
           <div className="space-y-3">
             {/* Desktop Table */}
-            <div className="hidden lg:block overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+            <div className="hidden overflow-hidden rounded-lg border border-border bg-card shadow-sm lg:block">
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-border bg-muted/40 text-xs font-semibold uppercase text-muted-foreground">
                   <tr>
@@ -670,7 +701,9 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                             rel="noopener noreferrer"
                             className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                           >
-                            <span className="truncate max-w-[160px]">{lead.website.replace(/^https?:\/\//, "")}</span>
+                            <span className="max-w-[160px] truncate">
+                              {lead.website.replace(/^https?:\/\//, "")}
+                            </span>
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         ) : null}
@@ -682,16 +715,16 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                           <span>{lead.location}</span>
                         </div>
                       </td>
-                      <td className="px-3 py-4 align-top text-center">
+                      <td className="px-3 py-4 text-center align-top">
                         <div className="inline-flex flex-col items-center">
                           <div
                             className={cn(
-                              "flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold shadow-xs",
+                              "shadow-xs flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold",
                               lead.status === "HOT"
-                                ? "bg-red-500/15 text-red-600 border border-red-500/30"
+                                ? "border border-red-500/30 bg-red-500/15 text-red-600"
                                 : lead.status === "WARM"
-                                ? "bg-amber-500/15 text-amber-600 border border-amber-500/30"
-                                : "bg-sky-500/15 text-sky-600 border border-sky-500/30"
+                                  ? "border border-amber-500/30 bg-amber-500/15 text-amber-600"
+                                  : "border border-sky-500/30 bg-sky-500/15 text-sky-600",
                             )}
                           >
                             {lead.score}
@@ -702,35 +735,38 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                               lead.status === "HOT"
                                 ? "text-red-600"
                                 : lead.status === "WARM"
-                                ? "text-amber-600"
-                                : "text-sky-600"
+                                  ? "text-amber-600"
+                                  : "text-sky-600",
                             )}
                           >
                             {lead.status}
                           </span>
                         </div>
                       </td>
-                      <td className="px-3 py-4 align-top max-w-xs">
-                        <p className="text-xs font-medium text-foreground line-clamp-2">
+                      <td className="max-w-xs px-3 py-4 align-top">
+                        <p className="line-clamp-2 text-xs font-medium text-foreground">
                           {lead.opportunity || "Growth potential in local market."}
                         </p>
                         {lead.aiInsight ? (
-                          <p className="mt-1 text-xs text-muted-foreground line-clamp-2 italic">
+                          <p className="mt-1 line-clamp-2 text-xs italic text-muted-foreground">
                             &quot;{lead.aiInsight}&quot;
                           </p>
                         ) : null}
                       </td>
                       <td className="px-3 py-4 align-top">
-                        <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-xs">
+                        <Badge
+                          variant="outline"
+                          className="border-primary/20 bg-primary/5 text-xs text-primary"
+                        >
                           {lead.recommendedService || "SEO + GEO Growth"}
                         </Badge>
                         {lead.nextAction ? (
-                          <div className="mt-1 text-[11px] text-muted-foreground line-clamp-1">
+                          <div className="mt-1 line-clamp-1 text-[11px] text-muted-foreground">
                             {lead.nextAction}
                           </div>
                         ) : null}
                       </td>
-                      <td className="py-4 pl-3 pr-4 align-top text-right">
+                      <td className="py-4 pl-3 pr-4 text-right align-top">
                         <div className="flex items-center justify-end gap-1.5">
                           <Button
                             variant="secondary"
@@ -762,12 +798,14 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
             {/* Mobile / Tablet Cards */}
             <div className="grid grid-cols-1 gap-3 lg:hidden">
               {paginatedLeads.map((lead) => (
-                <Card key={lead.id} className="border-border shadow-xs">
-                  <CardContent className="p-4 space-y-3">
+                <Card key={lead.id} className="shadow-xs border-border">
+                  <CardContent className="space-y-3 p-4">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h4 className="font-semibold text-foreground text-base">{lead.businessName}</h4>
-                        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
+                        <h4 className="text-base font-semibold text-foreground">
+                          {lead.businessName}
+                        </h4>
+                        <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                           <span>{lead.industry}</span>
                           <span>•</span>
                           <span className="flex items-center gap-0.5">
@@ -781,10 +819,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                         className={cn(
                           "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                           lead.status === "HOT"
-                            ? "bg-red-500/15 text-red-600 border border-red-500/30"
+                            ? "border border-red-500/30 bg-red-500/15 text-red-600"
                             : lead.status === "WARM"
-                            ? "bg-amber-500/15 text-amber-600 border border-amber-500/30"
-                            : "bg-sky-500/15 text-sky-600 border border-sky-500/30"
+                              ? "border border-amber-500/30 bg-amber-500/15 text-amber-600"
+                              : "border border-sky-500/30 bg-sky-500/15 text-sky-600",
                         )}
                       >
                         {lead.score}
@@ -798,7 +836,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                       </div>
                     ) : null}
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-border/60">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-1">
                       <Badge variant="outline" className="text-[11px]">
                         {lead.recommendedService || "SEO Growth"}
                       </Badge>
@@ -834,7 +872,8 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
               <div className="flex items-center justify-between pt-3">
                 <div className="text-xs text-muted-foreground">
                   Showing {(currentPage - 1) * pageSize + 1} to{" "}
-                  {Math.min(currentPage * pageSize, filteredLeads.length)} of {filteredLeads.length} leads
+                  {Math.min(currentPage * pageSize, filteredLeads.length)} of {filteredLeads.length}{" "}
+                  leads
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Button
@@ -846,7 +885,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                   >
                     Previous
                   </Button>
-                  <span className="text-xs font-medium px-2">
+                  <span className="px-2 text-xs font-medium">
                     {currentPage} / {totalPages}
                   </span>
                   <Button
@@ -867,10 +906,10 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
 
       {/* ── Outreach Modal / Dialog ── */}
       {activeOutreachLead ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="relative w-full max-w-2xl rounded-xl border border-border bg-card shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95">
+        <div className="backdrop-blur-xs fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl animate-in fade-in-0 zoom-in-95">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-border p-4 sm:p-6 bg-muted/20">
+            <div className="flex items-center justify-between border-b border-border bg-muted/20 p-4 sm:p-6">
               <div>
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-primary" />
@@ -878,21 +917,22 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                     Personalized Outreach — {activeOutreachLead.businessName}
                   </h3>
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  AI-crafted outreach pitch tailored to their specific industry, location, and growth opportunity.
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  AI-crafted outreach pitch tailored to their specific industry, location, and
+                  growth opportunity.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveOutreachLead(null)}
-                className="rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Channel Tabs */}
-            <div className="border-b border-border bg-muted/30 px-4 sm:px-6 pt-3 flex gap-2">
+            <div className="flex gap-2 border-b border-border bg-muted/30 px-4 pt-3 sm:px-6">
               <button
                 type="button"
                 onClick={() => handleChangeChannel("email")}
@@ -900,7 +940,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                   "flex items-center gap-2 border-b-2 px-3 py-2 text-xs font-semibold transition-colors",
                   outreachChannel === "email"
                     ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Mail className="h-4 w-4" />
@@ -913,7 +953,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                   "flex items-center gap-2 border-b-2 px-3 py-2 text-xs font-semibold transition-colors",
                   outreachChannel === "whatsapp"
                     ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground",
                 )}
               >
                 <MessageSquare className="h-4 w-4" />
@@ -926,7 +966,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                   "flex items-center gap-2 border-b-2 px-3 py-2 text-xs font-semibold transition-colors",
                   outreachChannel === "general"
                     ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Share2 className="h-4 w-4" />
@@ -935,11 +975,11 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
             </div>
 
             {/* Modal Body */}
-            <div className="p-4 sm:p-6 space-y-4">
+            <div className="space-y-4 p-4 sm:p-6">
               {isGeneratingOutreach ? (
                 <div className="py-12 text-center">
                   <Spinner className="mx-auto h-7 w-7 text-primary" />
-                  <p className="mt-2 text-sm text-muted-foreground font-medium">
+                  <p className="mt-2 text-sm font-medium text-muted-foreground">
                     Personalizing outreach for {activeOutreachLead.businessName}...
                   </p>
                 </div>
@@ -947,11 +987,13 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
                 <div className="space-y-4">
                   {outreachChannel !== "whatsapp" && outreachSubject ? (
                     <div className="space-y-1">
-                      <Label className="text-xs font-semibold uppercase text-muted-foreground">Subject Line</Label>
+                      <Label className="text-xs font-semibold uppercase text-muted-foreground">
+                        Subject Line
+                      </Label>
                       <Input
                         value={outreachSubject}
                         onChange={(e) => setOutreachSubject(e.target.value)}
-                        className="font-medium text-sm"
+                        className="text-sm font-medium"
                       />
                     </div>
                   ) : null}
@@ -972,7 +1014,7 @@ export function LeadGenerationPanel({ userEmail: _userEmail }: LeadGenerationPan
             </div>
 
             {/* Modal Footer */}
-            <div className="flex items-center justify-between border-t border-border p-4 sm:p-6 bg-muted/10">
+            <div className="flex items-center justify-between border-t border-border bg-muted/10 p-4 sm:p-6">
               <Button
                 variant="outline"
                 size="sm"

@@ -10,12 +10,7 @@
  * wire without losing information.
  */
 export type JSONValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JSONValue[]
-  | { [key: string]: JSONValue };
+  string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
 
 /**
  * Free-form structured metadata attached to requests, results, agents,
@@ -36,8 +31,7 @@ export type Metadata = Record<string, JSONValue>;
  * @typeParam E - The error type on failure. Defaults to `Error`.
  */
 export type Result<T, E = Error> =
-  | { readonly success: true; readonly data: T }
-  | { readonly success: false; readonly error: E };
+  { readonly success: true; readonly data: T } | { readonly success: false; readonly error: E };
 
 /**
  * Constructs a successful {@link Result}.

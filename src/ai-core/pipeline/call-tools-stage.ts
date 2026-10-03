@@ -30,9 +30,10 @@ export const DEFERRED_TOOL_RESULTS_SCRATCHPAD_KEY = "ai-core.deferredToolResults
  * @typeParam TPayload - The shape of the target agent's input payload.
  * @typeParam TResult - The shape of the target agent's result payload.
  */
-export class CallToolsStage<TPayload, TResult>
-  implements IPipelineStage<PipelinePayload<TPayload, TResult>, PipelinePayload<TPayload, TResult>>
-{
+export class CallToolsStage<TPayload, TResult> implements IPipelineStage<
+  PipelinePayload<TPayload, TResult>,
+  PipelinePayload<TPayload, TResult>
+> {
   /** @inheritdoc */
   public readonly name = PipelineStageName.CALL_TOOLS;
 
@@ -50,8 +51,7 @@ export class CallToolsStage<TPayload, TResult>
   ): Promise<PipelinePayload<TPayload, TResult>> {
     const pendingCalls =
       (context.scratchpad.get(PENDING_TOOL_CALLS_SCRATCHPAD_KEY) as
-        | ToolInput<unknown>[]
-        | undefined) ?? [];
+        ToolInput<unknown>[] | undefined) ?? [];
 
     if (pendingCalls.length === 0) {
       return input;

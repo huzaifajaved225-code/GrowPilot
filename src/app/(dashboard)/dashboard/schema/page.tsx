@@ -19,8 +19,8 @@ export default async function SchemaBuilderPage(): Promise<React.JSX.Element> {
           Schema &amp; Search Readability Builder
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Analyze your website and generate copy-ready JSON-LD structured data
-          to improve search engine readability.
+          Analyze your website and generate copy-ready JSON-LD structured data to improve search
+          engine readability.
         </p>
       </div>
 

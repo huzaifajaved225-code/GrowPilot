@@ -46,7 +46,11 @@ async function main(): Promise<void> {
   });
 
   console.log("Seed complete:");
-  console.log({ ownerEmail: owner.email, organizationSlug: organization.slug, projectId: project.id });
+  console.log({
+    ownerEmail: owner.email,
+    organizationSlug: organization.slug,
+    projectId: project.id,
+  });
 }
 
 main()

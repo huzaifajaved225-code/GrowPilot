@@ -50,10 +50,7 @@ export class DatabaseMemoryAdapter implements IDatabaseMemoryAdapter {
   }
 
   /** @inheritdoc */
-  public async get(
-    scope: MemoryQueryOptions["scope"],
-    _key: string,
-  ): Promise<MemoryRecord | null> {
+  public async get(scope: MemoryQueryOptions["scope"], _key: string): Promise<MemoryRecord | null> {
     throw this.notImplemented("get", scope);
   }
 

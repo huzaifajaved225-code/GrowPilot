@@ -96,7 +96,9 @@ export async function GET(request: Request): Promise<NextResponse> {
 
       const avgScore =
         allUserLeads.length > 0
-          ? Math.round(allUserLeads.reduce((acc, curr) => acc + curr.score, 0) / allUserLeads.length)
+          ? Math.round(
+              allUserLeads.reduce((acc, curr) => acc + curr.score, 0) / allUserLeads.length,
+            )
           : 0;
 
       return NextResponse.json({

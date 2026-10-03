@@ -196,18 +196,13 @@ export function SeoAuditPanel({ projects }: SeoAuditPanelProps): React.JSX.Eleme
           {/* Issues */}
           {result.issues.length > 0 ? (
             <Card className="p-6">
-              <h3 className="mb-4 text-lg font-semibold">
-                Issues ({result.issues.length})
-              </h3>
+              <h3 className="mb-4 text-lg font-semibold">Issues ({result.issues.length})</h3>
               <div className="space-y-3">
                 {result.issues.map((issue, index) => {
                   const config = severityConfig[issue.severity];
                   const Icon = config.icon;
                   return (
-                    <div
-                      key={index}
-                      className="flex gap-3 rounded-lg border border-border p-4"
-                    >
+                    <div key={index} className="flex gap-3 rounded-lg border border-border p-4">
                       <div className={`rounded-lg p-2 ${config.bg}`}>
                         <Icon className={`h-4 w-4 ${config.color}`} />
                       </div>

@@ -2,8 +2,15 @@
 
 import * as React from "react";
 import {
-  Code, AlertTriangle, CheckCircle, Copy, RefreshCw,
-  Globe, BarChart3, Shield, Info,
+  Code,
+  AlertTriangle,
+  CheckCircle,
+  Copy,
+  RefreshCw,
+  Globe,
+  BarChart3,
+  Shield,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,21 +18,44 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 type AnalysisStatus =
-  | "idle" | "validating" | "crawling" | "extracting"
-  | "analyzing" | "generating" | "validating-schema" | "completed" | "failed";
+  | "idle"
+  | "validating"
+  | "crawling"
+  | "extracting"
+  | "analyzing"
+  | "generating"
+  | "validating-schema"
+  | "completed"
+  | "failed";
 
 interface SchemaResult {
   url: string;
   businessType: { type: string; confidence: number; signals: string[]; method: string };
   website: {
-    title: string | null; description: string | null; canonical: string | null;
+    title: string | null;
+    description: string | null;
+    canonical: string | null;
     headings: { h1: string[]; h2: string[]; h3: string[] };
-    contact: Record<string, unknown>; socialProfiles: string[];
+    contact: Record<string, unknown>;
+    socialProfiles: string[];
   };
-  existingSchema: { type: string; schemaType: string | null; valid: boolean; parseError: string | null }[];
+  existingSchema: {
+    type: string;
+    schemaType: string | null;
+    valid: boolean;
+    parseError: string | null;
+  }[];
   generatedSchema: Record<string, unknown>;
-  validation: { valid: boolean; errors: string[]; warnings: string[]; missingRecommendedProperties: string[] };
-  readability: { score: number; checks: { id: string; label: string; passed: boolean; detail: string }[] };
+  validation: {
+    valid: boolean;
+    errors: string[];
+    warnings: string[];
+    missingRecommendedProperties: string[];
+  };
+  readability: {
+    score: number;
+    checks: { id: string; label: string; passed: boolean; detail: string }[];
+  };
   missingInformation: string[];
 }
 
@@ -58,7 +88,9 @@ interface SchemaBuilderPanelProps {
   isAuthenticated: boolean;
 }
 
-export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps): React.JSX.Element {
+export function SchemaBuilderPanel({
+  isAuthenticated,
+}: SchemaBuilderPanelProps): React.JSX.Element {
   const [url, setUrl] = React.useState("");
   const [businessType, setBusinessType] = React.useState("auto");
   const [status, setStatus] = React.useState<AnalysisStatus>("idle");
@@ -161,7 +193,9 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
               className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               {BUSINESS_TYPES.map((bt) => (
-                <option key={bt.value} value={bt.value}>{bt.label}</option>
+                <option key={bt.value} value={bt.value}>
+                  {bt.label}
+                </option>
               ))}
             </select>
           </div>
@@ -208,12 +242,15 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
               </div>
               <p className="text-2xl font-bold">{result.businessType.type}</p>
               <p className="text-sm text-muted-foreground">
-                Confidence: {Math.round(result.businessType.confidence * 100)}% ({result.businessType.method})
+                Confidence: {Math.round(result.businessType.confidence * 100)}% (
+                {result.businessType.method})
               </p>
               {result.businessType.signals.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">
                   {result.businessType.signals.map((s, i) => (
-                    <Badge key={i} variant="outline" className="text-xs">{s}</Badge>
+                    <Badge key={i} variant="outline" className="text-xs">
+                      {s}
+                    </Badge>
                   ))}
                 </div>
               )}
@@ -251,15 +288,24 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
             {result.existingSchema.length > 0 ? (
               <div className="space-y-2">
                 {result.existingSchema.map((schema, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded border border-border p-2 text-sm">
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 rounded border border-border p-2 text-sm"
+                  >
                     <Badge variant="outline">{schema.type}</Badge>
                     {schema.schemaType && <span className="font-medium">{schema.schemaType}</span>}
                     {schema.valid ? (
-                      <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">Valid</Badge>
+                      <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                        Valid
+                      </Badge>
                     ) : (
-                      <Badge className="bg-red-500/10 text-red-700 dark:text-red-400">Malformed</Badge>
+                      <Badge className="bg-red-500/10 text-red-700 dark:text-red-400">
+                        Malformed
+                      </Badge>
                     )}
-                    {schema.parseError && <span className="text-xs text-red-500">{schema.parseError}</span>}
+                    {schema.parseError && (
+                      <span className="text-xs text-red-500">{schema.parseError}</span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -276,7 +322,9 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
               </h3>
               <div className="flex flex-wrap gap-2">
                 {result.missingInformation.map((item, i) => (
-                  <Badge key={i} variant="outline" className="text-xs">{item}</Badge>
+                  <Badge key={i} variant="outline" className="text-xs">
+                    {item}
+                  </Badge>
                 ))}
               </div>
               <p className="mt-2 text-xs text-muted-foreground">
@@ -297,14 +345,18 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
             ) : (
               <div className="space-y-1">
                 {result.validation.errors.map((err, i) => (
-                  <p key={i} className="text-sm text-red-600">{err}</p>
+                  <p key={i} className="text-sm text-red-600">
+                    {err}
+                  </p>
                 ))}
               </div>
             )}
             {result.validation.warnings.length > 0 && (
               <div className="mt-2 space-y-1">
                 {result.validation.warnings.map((w, i) => (
-                  <p key={i} className="text-xs text-amber-600">{w}</p>
+                  <p key={i} className="text-xs text-amber-600">
+                    {w}
+                  </p>
                 ))}
               </div>
             )}
@@ -340,9 +392,9 @@ export function SchemaBuilderPanel({ isAuthenticated }: SchemaBuilderPanelProps)
             <div className="flex items-start gap-3">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
               <p className="text-xs text-amber-800 dark:text-amber-200">
-                GrowPilot generates structured data based on information publicly available on your website.
-                Adding schema does not guarantee higher rankings, featured snippets, or AI Overview inclusion.
-                This is a GrowPilot analysis score, not a Google score.
+                GrowPilot generates structured data based on information publicly available on your
+                website. Adding schema does not guarantee higher rankings, featured snippets, or AI
+                Overview inclusion. This is a GrowPilot analysis score, not a Google score.
               </p>
             </div>
           </Card>

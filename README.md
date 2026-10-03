@@ -11,16 +11,16 @@ management, and social media planning, in one multi-tenant dashboard.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router), React 19, TypeScript |
-| Styling | Tailwind CSS, tailwindcss-animate, Framer Motion |
-| Data | PostgreSQL, Prisma ORM |
-| Auth | Auth.js (Credentials + Google OAuth), JWT sessions |
-| Forms/Validation | React Hook Form, Zod |
-| Charts | Recharts |
-| Tooling | ESLint, Prettier, Husky, lint-staged, commitlint |
-| CI/CD | GitHub Actions, Docker, Vercel |
+| Layer            | Technology                                         |
+| ---------------- | -------------------------------------------------- |
+| Framework        | Next.js 15 (App Router), React 19, TypeScript      |
+| Styling          | Tailwind CSS, tailwindcss-animate, Framer Motion   |
+| Data             | PostgreSQL, Prisma ORM                             |
+| Auth             | Auth.js (Credentials + Google OAuth), JWT sessions |
+| Forms/Validation | React Hook Form, Zod                               |
+| Charts           | Recharts                                           |
+| Tooling          | ESLint, Prettier, Husky, lint-staged, commitlint   |
+| CI/CD            | GitHub Actions, Docker, Vercel                     |
 
 ## Prerequisites
 
@@ -80,21 +80,21 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the dev server (Turbopack) |
-| `npm run build` | Production build |
-| `npm run start` | Start the production server |
-| `npm run lint` / `lint:fix` | Lint the codebase |
-| `npm run format` / `format:check` | Prettier format / check |
-| `npm run typecheck` | TypeScript project check, no emit |
-| `npm test` / `test:watch` | Run unit tests (Vitest) |
-| `npm run db:generate` | Generate Prisma client |
-| `npm run db:push` | Push schema to DB without migrations |
-| `npm run db:migrate` | Create + apply a dev migration |
-| `npm run db:migrate:deploy` | Apply migrations (CI/CD) |
-| `npm run db:seed` | Seed demo data |
-| `npm run db:studio` | Open Prisma Studio |
+| Script                            | Description                          |
+| --------------------------------- | ------------------------------------ |
+| `npm run dev`                     | Start the dev server (Turbopack)     |
+| `npm run build`                   | Production build                     |
+| `npm run start`                   | Start the production server          |
+| `npm run lint` / `lint:fix`       | Lint the codebase                    |
+| `npm run format` / `format:check` | Prettier format / check              |
+| `npm run typecheck`               | TypeScript project check, no emit    |
+| `npm test` / `test:watch`         | Run unit tests (Vitest)              |
+| `npm run db:generate`             | Generate Prisma client               |
+| `npm run db:push`                 | Push schema to DB without migrations |
+| `npm run db:migrate`              | Create + apply a dev migration       |
+| `npm run db:migrate:deploy`       | Apply migrations (CI/CD)             |
+| `npm run db:seed`                 | Seed demo data                       |
+| `npm run db:studio`               | Open Prisma Studio                   |
 
 ## Project Structure
 

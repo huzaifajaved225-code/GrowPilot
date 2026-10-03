@@ -112,7 +112,7 @@ export const BUILT_IN_PROMPT_LIBRARY: readonly PromptTemplateDefinition[] = [
   defineTemplate(
     "gbp-review-reply.user",
     PromptRole.USER,
-    "Review ({{rating}} stars) from {{reviewerName}}:\n\"{{reviewText}}\"\n\nDraft a reply.",
+    'Review ({{rating}} stars) from {{reviewerName}}:\n"{{reviewText}}"\n\nDraft a reply.',
     ["rating", "reviewerName", "reviewText"],
   ),
   defineTemplate(

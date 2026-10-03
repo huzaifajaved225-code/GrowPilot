@@ -7,8 +7,18 @@ import { PermissionDeniedError } from "@/lib/auth/permissions";
 
 /** Detail keys that must never reach the client — redacted from every error response. */
 const SENSITIVE_DETAIL_KEYS = new Set([
-  "apikey", "api_key", "secret", "token", "password", "authorization", "credential",
-  "credentials", "accesstoken", "access_token", "refreshtoken", "refresh_token",
+  "apikey",
+  "api_key",
+  "secret",
+  "token",
+  "password",
+  "authorization",
+  "credential",
+  "credentials",
+  "accesstoken",
+  "access_token",
+  "refreshtoken",
+  "refresh_token",
 ]);
 
 function sanitizeErrorDetails(details: unknown): unknown {
@@ -71,7 +81,11 @@ export function handleApiError(error: unknown): NextResponse<ApiErrorBody> {
     return NextResponse.json(
       {
         data: null,
-        error: { code: error.code, message: error.message, details: sanitizeErrorDetails(error.details) },
+        error: {
+          code: error.code,
+          message: error.message,
+          details: sanitizeErrorDetails(error.details),
+        },
       },
       { status: error.statusCode },
     );
@@ -81,7 +95,11 @@ export function handleApiError(error: unknown): NextResponse<ApiErrorBody> {
     return NextResponse.json(
       {
         data: null,
-        error: { code: error.code, message: error.message, details: sanitizeErrorDetails(error.details) },
+        error: {
+          code: error.code,
+          message: error.message,
+          details: sanitizeErrorDetails(error.details),
+        },
       },
       { status: error.statusCode },
     );

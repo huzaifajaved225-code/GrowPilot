@@ -70,10 +70,7 @@ export class RedisMemoryAdapter implements IRedisMemoryAdapter {
   }
 
   /** @inheritdoc */
-  public async get(
-    scope: MemoryQueryOptions["scope"],
-    _key: string,
-  ): Promise<MemoryRecord | null> {
+  public async get(scope: MemoryQueryOptions["scope"], _key: string): Promise<MemoryRecord | null> {
     this.assertConnected(scope);
     throw this.notImplemented("get");
   }

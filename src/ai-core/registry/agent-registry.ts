@@ -112,9 +112,7 @@ export class AgentRegistry implements IAgentRegistry {
 
     this.agents.set(
       agentId,
-      isReadyInstance
-        ? { kind: "instance", agent: instantiator }
-        : { kind: "lazy", instantiator },
+      isReadyInstance ? { kind: "instance", agent: instantiator } : { kind: "lazy", instantiator },
     );
 
     this.logger.debug("Agent registered", {

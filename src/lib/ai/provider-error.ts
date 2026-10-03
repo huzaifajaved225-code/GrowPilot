@@ -39,39 +39,31 @@ export class ProviderError extends AIError {
 
   /** Provider returned a 429 — caller should back off and retry. */
   public static rateLimited(providerId: ProviderId, retryAfterMs?: number): ProviderError {
-    return new ProviderError(
-      `Provider "${providerId}" rate-limited the request`,
-      providerId,
-      {
-        code: "PROVIDER_RATE_LIMITED",
-        httpStatus: 429,
-        retryable: true,
-        details: retryAfterMs !== undefined ? { retryAfterMs } : {},
-      },
-    );
+    return new ProviderError(`Provider "${providerId}" rate-limited the request`, providerId, {
+      code: "PROVIDER_RATE_LIMITED",
+      httpStatus: 429,
+      retryable: true,
+      details: retryAfterMs !== undefined ? { retryAfterMs } : {},
+    });
   }
 
   /** Provider rejected the API key or credentials. */
   public static unauthorized(providerId: ProviderId): ProviderError {
-    return new ProviderError(
-      `Provider "${providerId}" rejected the API credentials`,
-      providerId,
-      { code: "PROVIDER_UNAUTHORIZED", httpStatus: 401, statusCode: 401 },
-    );
+    return new ProviderError(`Provider "${providerId}" rejected the API credentials`, providerId, {
+      code: "PROVIDER_UNAUTHORIZED",
+      httpStatus: 401,
+      statusCode: 401,
+    });
   }
 
   /** Provider is unreachable or returned a 5xx error. */
   public static unavailable(providerId: ProviderId, httpStatus?: number): ProviderError {
-    return new ProviderError(
-      `Provider "${providerId}" is unavailable`,
-      providerId,
-      {
-        code: "PROVIDER_UNAVAILABLE",
-        httpStatus,
-        statusCode: 503,
-        retryable: true,
-      },
-    );
+    return new ProviderError(`Provider "${providerId}" is unavailable`, providerId, {
+      code: "PROVIDER_UNAVAILABLE",
+      httpStatus,
+      statusCode: 503,
+      retryable: true,
+    });
   }
 
   /** Provider response could not be parsed into the expected shape. */
@@ -93,7 +85,10 @@ export class ProviderError extends AIError {
   }
 
   /** All providers in the fallback chain have been exhausted. */
-  public static allProvidersFailed(providerIds: readonly ProviderId[], lastError: string): ProviderError {
+  public static allProvidersFailed(
+    providerIds: readonly ProviderId[],
+    lastError: string,
+  ): ProviderError {
     return new ProviderError(
       `All AI providers failed: ${lastError}`,
       providerIds[0] ?? ("unknown" as ProviderId),

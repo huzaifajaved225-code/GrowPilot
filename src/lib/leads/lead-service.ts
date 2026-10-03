@@ -91,8 +91,10 @@ export class LeadService {
         qualification = {
           score: fallbackScore,
           status: fallbackStatus,
-          opportunity: candidate.description ?? "Needs enhanced digital presence and search visibility.",
-          aiInsight: "Candidate presents strong expansion potential with targeted SEO and local visibility optimization.",
+          opportunity:
+            candidate.description ?? "Needs enhanced digital presence and search visibility.",
+          aiInsight:
+            "Candidate presents strong expansion potential with targeted SEO and local visibility optimization.",
           recommendedService: "SEO + Content Optimization",
           nextAction: "Initiate introductory outreach regarding search presence.",
         };

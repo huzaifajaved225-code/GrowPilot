@@ -269,18 +269,13 @@ export function GeoAuditPanel({ projects }: GeoAuditPanelProps): React.JSX.Eleme
           {/* Issues */}
           {result.issues.length > 0 ? (
             <Card className="p-6">
-              <h3 className="mb-4 text-lg font-semibold">
-                Issues ({result.issues.length})
-              </h3>
+              <h3 className="mb-4 text-lg font-semibold">Issues ({result.issues.length})</h3>
               <div className="space-y-3">
                 {result.issues.map((issue, index) => {
                   const config = severityConfig[issue.severity];
                   const Icon = config.icon;
                   return (
-                    <div
-                      key={index}
-                      className="flex gap-3 rounded-lg border border-border p-4"
-                    >
+                    <div key={index} className="flex gap-3 rounded-lg border border-border p-4">
                       <div className={`rounded-lg p-2 ${config.bg}`}>
                         <Icon className={`h-4 w-4 ${config.color}`} />
                       </div>
@@ -320,10 +315,7 @@ export function GeoAuditPanel({ projects }: GeoAuditPanelProps): React.JSX.Eleme
               </h3>
               <div className="space-y-3">
                 {result.opportunities.map((opp, index) => (
-                  <div
-                    key={index}
-                    className="rounded-lg border border-border p-4"
-                  >
+                  <div key={index} className="rounded-lg border border-border p-4">
                     <p className="text-sm font-semibold">{opp.title}</p>
                     <p className="mt-1 text-sm text-muted-foreground">{opp.description}</p>
                     <p className="mt-1 text-sm text-muted-foreground">

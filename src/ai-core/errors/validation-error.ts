@@ -27,11 +27,7 @@ export class ValidationError extends AIError {
    * @param issues - The individual field-level validation issues.
    * @param details - Additional arbitrary structured debugging details.
    */
-  constructor(
-    message: string,
-    issues: readonly ValidationIssue[],
-    details: Metadata = {},
-  ) {
+  constructor(message: string, issues: readonly ValidationIssue[], details: Metadata = {}) {
     super(
       message,
       "VALIDATION_ERROR",
@@ -58,13 +54,7 @@ export class ValidationError extends AIError {
    * @param message - Description of why the field failed validation.
    * @returns A new `ValidationError` with a single issue.
    */
-  public static forField(
-    path: string,
-    message: string,
-  ): ValidationError {
-    return new ValidationError(
-      `Validation failed: ${message}`,
-      [{ path: [path], message }],
-    );
+  public static forField(path: string, message: string): ValidationError {
+    return new ValidationError(`Validation failed: ${message}`, [{ path: [path], message }]);
   }
 }

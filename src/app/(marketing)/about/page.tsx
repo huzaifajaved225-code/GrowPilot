@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Brain, Target, Rocket, BarChart3, Shield, Eye, Lightbulb,
-  Layers, Users, DollarSign, Settings, Scale,
-  TrendingUp, Search, PenTool, Share2, Globe, Sparkles,
-  ArrowRight, CheckCircle2, Zap,
+  Brain,
+  Target,
+  Rocket,
+  BarChart3,
+  Shield,
+  Eye,
+  Lightbulb,
+  Layers,
+  Users,
+  DollarSign,
+  Settings,
+  Scale,
+  TrendingUp,
+  Search,
+  PenTool,
+  Share2,
+  Globe,
+  Sparkles,
+  ArrowRight,
+  CheckCircle2,
+  Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -75,14 +92,12 @@ const aiPrinciples = [
   },
   {
     title: "Evidence",
-    description:
-      "AI should use available data and observable signals rather than inventing facts.",
+    description: "AI should use available data and observable signals rather than inventing facts.",
     icon: Eye,
   },
   {
     title: "Control",
-    description:
-      "Businesses should remain in control of important decisions and actions.",
+    description: "Businesses should remain in control of important decisions and actions.",
     icon: Shield,
   },
   {
@@ -93,8 +108,7 @@ const aiPrinciples = [
   },
   {
     title: "Measurement",
-    description:
-      "Actions should connect to measurable outcomes whenever possible.",
+    description: "Actions should connect to measurable outcomes whenever possible.",
     icon: BarChart3,
   },
   {
@@ -150,13 +164,13 @@ export default function AboutPage(): React.JSX.Element {
           <Sparkles className="h-3 w-3" />
           AI Business Operating System
         </Badge>
-        <h1 className="font-heading max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+        <h1 className="max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
           Building the AI Operating System for Modern Businesses
         </h1>
         <p className="max-w-2xl text-lg text-muted-foreground">
-          GrowPilot is an AI-powered Business Operating System designed to help
-          businesses understand what is happening, identify what matters, take
-          action, automate repetitive work, and continuously improve.
+          GrowPilot is an AI-powered Business Operating System designed to help businesses
+          understand what is happening, identify what matters, take action, automate repetitive
+          work, and continuously improve.
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
           <Button size="lg" asChild>
@@ -180,13 +194,11 @@ export default function AboutPage(): React.JSX.Element {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Modern businesses rely on different tools for marketing, sales,
-                customer support, operations, finance, HR, analytics, and other
-                functions.
+                Modern businesses rely on different tools for marketing, sales, customer support,
+                operations, finance, HR, analytics, and other functions.
               </p>
               <p className="font-medium text-foreground">
-                The problem isn&apos;t a lack of software. The problem is
-                fragmentation.
+                The problem isn&apos;t a lack of software. The problem is fragmentation.
               </p>
             </div>
           </div>
@@ -208,13 +220,11 @@ export default function AboutPage(): React.JSX.Element {
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-3xl space-y-4 text-center">
+            <p className="text-muted-foreground">GrowPilot is being built to solve this problem.</p>
             <p className="text-muted-foreground">
-              GrowPilot is being built to solve this problem.
-            </p>
-            <p className="text-muted-foreground">
-              Instead of becoming another disconnected tool, GrowPilot aims to
-              become an intelligent operating layer that connects business
-              information, AI intelligence, workflows, and measurable outcomes.
+              Instead of becoming another disconnected tool, GrowPilot aims to become an intelligent
+              operating layer that connects business information, AI intelligence, workflows, and
+              measurable outcomes.
             </p>
           </div>
         </div>
@@ -228,9 +238,8 @@ export default function AboutPage(): React.JSX.Element {
               One AI. One Business. One Connected Operating System.
             </h2>
             <p className="text-muted-foreground">
-              Our long-term vision is to build an AI Business Operating System
-              capable of supporting the major functions of a business through
-              connected intelligence and workflows.
+              Our long-term vision is to build an AI Business Operating System capable of supporting
+              the major functions of a business through connected intelligence and workflows.
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-4xl">
@@ -240,22 +249,16 @@ export default function AboutPage(): React.JSX.Element {
                   <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
                     <Rocket className="h-4 w-4 text-primary" />
                   </div>
-                  <h3 className="font-heading font-semibold">
-                    GrowPilot starts with
-                  </h3>
+                  <h3 className="font-heading font-semibold">GrowPilot starts with</h3>
                 </div>
-                <p className="text-lg font-semibold text-primary">
-                  Marketing &amp; Growth
-                </p>
+                <p className="text-lg font-semibold text-primary">Marketing &amp; Growth</p>
               </Card>
               <Card className="p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
                     <Layers className="h-4 w-4 text-primary" />
                   </div>
-                  <h3 className="font-heading font-semibold">
-                    Then expands toward
-                  </h3>
+                  <h3 className="font-heading font-semibold">Then expands toward</h3>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {expansionDepartments.map((dept) => (
@@ -267,8 +270,8 @@ export default function AboutPage(): React.JSX.Element {
               </Card>
             </div>
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              The ultimate goal is to allow different business functions to work
-              with shared context instead of operating as isolated systems.
+              The ultimate goal is to allow different business functions to work with shared context
+              instead of operating as isolated systems.
             </p>
           </div>
         </div>
@@ -282,12 +285,12 @@ export default function AboutPage(): React.JSX.Element {
               Starting With Marketing &amp; Growth
             </h2>
             <p className="text-muted-foreground">
-              Every business needs visibility, customers, and measurable growth.
-              That&apos;s why GrowPilot starts with Marketing &amp; Growth.
+              Every business needs visibility, customers, and measurable growth. That&apos;s why
+              GrowPilot starts with Marketing &amp; Growth.
             </p>
             <p className="text-muted-foreground">
-              The initial platform focuses on helping businesses understand and
-              improve areas such as:
+              The initial platform focuses on helping businesses understand and improve areas such
+              as:
             </p>
           </div>
           <div className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -303,13 +306,9 @@ export default function AboutPage(): React.JSX.Element {
           </div>
           <div className="mx-auto mt-10 max-w-3xl rounded-lg border border-primary/20 bg-primary/5 p-5 text-center">
             <p className="text-sm text-muted-foreground">
-              GrowPilot treats traditional search optimization, answer
-              visibility, and AI-search visibility as connected parts of a
-              broader{" "}
-              <span className="font-medium text-foreground">
-                Search Visibility
-              </span>{" "}
-              strategy.
+              GrowPilot treats traditional search optimization, answer visibility, and AI-search
+              visibility as connected parts of a broader{" "}
+              <span className="font-medium text-foreground">Search Visibility</span> strategy.
             </p>
           </div>
         </div>
@@ -338,15 +337,13 @@ export default function AboutPage(): React.JSX.Element {
                           <Icon className="h-4 w-4 text-primary" />
                         </div>
                       </div>
-                      <h3 className="font-heading text-lg font-semibold">
-                        {stage.title}
-                      </h3>
+                      <h3 className="font-heading text-lg font-semibold">{stage.title}</h3>
                       <p className="mt-2 flex-1 text-sm text-muted-foreground">
                         {stage.description}
                       </p>
                     </Card>
                     {idx < stages.length - 1 && (
-                      <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10">
+                      <div className="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:block">
                         <ArrowRight className="h-4 w-4 text-muted-foreground/50" />
                       </div>
                     )}
@@ -383,9 +380,7 @@ export default function AboutPage(): React.JSX.Element {
                   <Icon className="h-4 w-4 text-primary" />
                 </div>
                 <h3 className="font-heading font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {description}
-                </p>
+                <p className="mt-2 text-sm text-muted-foreground">{description}</p>
               </Card>
             ))}
           </div>
@@ -401,35 +396,28 @@ export default function AboutPage(): React.JSX.Element {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                There are already thousands of AI tools that generate content,
-                analyze data, answer questions, and automate individual tasks.
+                There are already thousands of AI tools that generate content, analyze data, answer
+                questions, and automate individual tasks.
               </p>
-              <p className="font-medium text-foreground">
-                GrowPilot&apos;s ambition is different.
-              </p>
+              <p className="font-medium text-foreground">GrowPilot&apos;s ambition is different.</p>
               <p>We want to connect intelligence with execution.</p>
             </div>
           </div>
           <div className="mx-auto mt-10 max-w-2xl">
             <Card className="p-6">
               <p className="text-center text-sm text-muted-foreground">
-                Instead of asking users to constantly move information between
-                disconnected tools, GrowPilot is being designed to understand
-                the business context and help move from:
+                Instead of asking users to constantly move information between disconnected tools,
+                GrowPilot is being designed to understand the business context and help move from:
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                {["Data", "Insight", "Decision", "Action", "Measurement"].map(
-                  (step, i, arr) => (
-                    <span key={step} className="flex items-center gap-2">
-                      <Badge variant="outline" className="px-3 py-1">
-                        {step}
-                      </Badge>
-                      {i < arr.length - 1 && (
-                        <ArrowRight className="h-3 w-3 text-muted-foreground" />
-                      )}
-                    </span>
-                  ),
-                )}
+                {["Data", "Insight", "Decision", "Action", "Measurement"].map((step, i, arr) => (
+                  <span key={step} className="flex items-center gap-2">
+                    <Badge variant="outline" className="px-3 py-1">
+                      {step}
+                    </Badge>
+                    {i < arr.length - 1 && <ArrowRight className="h-3 w-3 text-muted-foreground" />}
+                  </span>
+                ))}
               </div>
             </Card>
           </div>
@@ -444,49 +432,37 @@ export default function AboutPage(): React.JSX.Element {
               From Growth Platform to Business Operating System
             </h2>
             <p className="text-sm text-muted-foreground">
-              Long-term product direction and roadmap. Not all phases are
-              currently available.
+              Long-term product direction and roadmap. Not all phases are currently available.
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl">
             <div className="relative space-y-0">
-              <div className="absolute left-5 top-0 bottom-0 w-px bg-border sm:left-1/2 sm:-translate-x-px" />
+              <div className="absolute bottom-0 left-5 top-0 w-px bg-border sm:left-1/2 sm:-translate-x-px" />
               {roadmapPhases.map(({ phase, label, icon: Icon, current }) => (
                 <div
                   key={phase}
                   className={`relative flex items-center gap-4 py-3 ${
-                    phase % 2 === 0
-                      ? "sm:flex-row-reverse sm:text-right"
-                      : "sm:flex-row"
+                    phase % 2 === 0 ? "sm:flex-row-reverse sm:text-right" : "sm:flex-row"
                   }`}
                 >
-                  <div className="absolute left-5 sm:left-1/2 -translate-x-1/2 z-10">
+                  <div className="absolute left-5 z-10 -translate-x-1/2 sm:left-1/2">
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full border-2 ${
-                        current
-                          ? "border-primary bg-primary/10"
-                          : "border-border bg-background"
+                        current ? "border-primary bg-primary/10" : "border-border bg-background"
                       }`}
                     >
                       <Icon
-                        className={`h-4 w-4 ${
-                          current ? "text-primary" : "text-muted-foreground"
-                        }`}
+                        className={`h-4 w-4 ${current ? "text-primary" : "text-muted-foreground"}`}
                       />
                     </div>
                   </div>
                   <div className="ml-16 sm:ml-0 sm:w-1/2 sm:px-8">
                     <div
                       className={`flex items-center gap-2 ${
-                        phase % 2 === 0
-                          ? "sm:justify-end"
-                          : "sm:justify-start"
+                        phase % 2 === 0 ? "sm:justify-end" : "sm:justify-start"
                       }`}
                     >
-                      <Badge
-                        variant={current ? "default" : "outline"}
-                        className="text-xs"
-                      >
+                      <Badge variant={current ? "default" : "outline"} className="text-xs">
                         Phase {phase}
                       </Badge>
                       <span
@@ -497,10 +473,7 @@ export default function AboutPage(): React.JSX.Element {
                         {label}
                       </span>
                       {current && (
-                        <Badge
-                          variant="secondary"
-                          className="text-[10px] px-1.5 py-0"
-                        >
+                        <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
                           Current
                         </Badge>
                       )}
@@ -521,9 +494,8 @@ export default function AboutPage(): React.JSX.Element {
               Make Intelligent Business Operations Accessible
             </h2>
             <p className="text-muted-foreground">
-              Our mission is to make powerful business intelligence and
-              responsible AI-driven execution accessible to businesses of every
-              size.
+              Our mission is to make powerful business intelligence and responsible AI-driven
+              execution accessible to businesses of every size.
             </p>
             <p className="text-muted-foreground">We want businesses to:</p>
           </div>
@@ -553,10 +525,9 @@ export default function AboutPage(): React.JSX.Element {
             </p>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                GrowPilot is being built toward a future where AI can help
-                businesses understand their operations, coordinate workflows,
-                discover opportunities, automate repetitive work, and support
-                better decisions across departments.
+                GrowPilot is being built toward a future where AI can help businesses understand
+                their operations, coordinate workflows, discover opportunities, automate repetitive
+                work, and support better decisions across departments.
               </p>
               <div className="grid gap-4 pt-4 sm:grid-cols-2">
                 <Card className="p-4 text-left">
@@ -566,9 +537,7 @@ export default function AboutPage(): React.JSX.Element {
                   </p>
                 </Card>
                 <Card className="p-4 text-left">
-                  <p className="text-sm font-medium">
-                    AI provides the intelligence layer.
-                  </p>
+                  <p className="text-sm font-medium">AI provides the intelligence layer.</p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Connecting data, insights, workflows, and execution.
                   </p>
@@ -585,9 +554,7 @@ export default function AboutPage(): React.JSX.Element {
           <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
             Your Business Deserves an Operating System for Growth.
           </h2>
-          <p className="max-w-xl text-lg text-muted-foreground">
-            GrowPilot is building it.
-          </p>
+          <p className="max-w-xl text-lg text-muted-foreground">GrowPilot is building it.</p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
               <Link href="/login">

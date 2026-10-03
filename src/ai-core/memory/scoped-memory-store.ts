@@ -74,5 +74,3 @@ export class ScopedMemoryStore<TValue = unknown> implements IScopedMemoryStore<T
     await this.adapter.clear(this.scope, `${this.namespace}:`);
   }
 }
-
-

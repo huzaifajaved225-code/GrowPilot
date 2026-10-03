@@ -36,7 +36,12 @@ export const dashboardNav: NavSection[] = [
   {
     title: "Presence",
     items: [
-      { title: "Google Business Profile", href: "/dashboard/gbp", icon: "MapPin", isDisabled: true },
+      {
+        title: "Google Business Profile",
+        href: "/dashboard/gbp",
+        icon: "MapPin",
+        isDisabled: true,
+      },
       { title: "Social Media", href: "/dashboard/social", icon: "Share2", isDisabled: true },
     ],
   },

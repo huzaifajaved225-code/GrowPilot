@@ -174,7 +174,12 @@ export interface IVectorMemoryAdapter<TValue = unknown> {
    * @param value - The payload to associate with this vector.
    * @param metadata - Optional metadata usable as a query-time filter.
    */
-  upsert(key: string, embedding: readonly number[], value: TValue, metadata?: Record<string, unknown>): Promise<void>;
+  upsert(
+    key: string,
+    embedding: readonly number[],
+    value: TValue,
+    metadata?: Record<string, unknown>,
+  ): Promise<void>;
 
   /**
    * Finds the nearest-neighbor vectors to a query embedding.

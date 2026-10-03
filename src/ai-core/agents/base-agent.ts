@@ -73,9 +73,10 @@ function resolveAgentConfig(overrides?: Partial<AgentConfig>): AgentConfig {
  * }
  * ```
  */
-export abstract class BaseAgent<TPayload = Metadata, TResult = Metadata>
-  implements IAgent<TPayload, TResult>
-{
+export abstract class BaseAgent<TPayload = Metadata, TResult = Metadata> implements IAgent<
+  TPayload,
+  TResult
+> {
   /** Static identity metadata for this agent. Every concrete agent must define its own. */
   public abstract readonly descriptor: AgentDescriptor;
 
@@ -142,7 +143,6 @@ export abstract class BaseAgent<TPayload = Metadata, TResult = Metadata>
   ): Promise<void> {
     // Intentionally empty by default — subclasses override to persist results.
   }
-
 
   /**
    * Convenience helper that delegates an AI text-generation request to the

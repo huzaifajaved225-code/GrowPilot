@@ -11,7 +11,7 @@ export default function HomePage(): React.JSX.Element {
   return (
     <section className="container flex flex-col items-center gap-6 py-24 text-center">
       <Badge variant="secondary">Foundation build — Phase 2</Badge>
-      <h1 className="font-heading max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
+      <h1 className="max-w-2xl font-heading text-4xl font-bold tracking-tight sm:text-5xl">
         {siteConfig.name}
       </h1>
       <p className="max-w-xl text-lg text-muted-foreground">{siteConfig.description}</p>

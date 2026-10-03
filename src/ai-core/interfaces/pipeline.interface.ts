@@ -17,7 +17,10 @@ import type { AIProviderRequest, AIProviderResponse, ProviderId } from "@/lib/ai
  * interface structurally.
  */
 export interface IAIProviderManager {
-  generateText(request: AIProviderRequest, providerOverride?: ProviderId): Promise<AIProviderResponse>;
+  generateText(
+    request: AIProviderRequest,
+    providerOverride?: ProviderId,
+  ): Promise<AIProviderResponse>;
 }
 
 /**

@@ -96,7 +96,7 @@ export function DashboardSidebar({
   return (
     <>
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col border-r border-border bg-card">
+      <aside className="hidden border-r border-border bg-card lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex min-h-0 flex-1 flex-col">
           {/* Brand */}
           <div className="flex h-16 items-center gap-3 border-b border-border px-6">
@@ -109,13 +109,9 @@ export function DashboardSidebar({
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto scrollbar-thin px-3 py-4">
+          <nav className="scrollbar-thin flex-1 overflow-y-auto px-3 py-4">
             {dashboardNav.map((section) => (
-              <SidebarSection
-                key={section.title}
-                section={section}
-                pathname={pathname}
-              />
+              <SidebarSection key={section.title} section={section} pathname={pathname} />
             ))}
           </nav>
 
@@ -123,16 +119,12 @@ export function DashboardSidebar({
           <div className="border-t border-border p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
-                {userName?.charAt(0)?.toUpperCase() ??
-                  userEmail?.charAt(0)?.toUpperCase() ??
-                  "U"}
+                {userName?.charAt(0)?.toUpperCase() ?? userEmail?.charAt(0)?.toUpperCase() ?? "U"}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium leading-tight">
-                  {userName ?? "User"}
-                </p>
+                <p className="truncate text-sm font-medium leading-tight">{userName ?? "User"}</p>
                 {userEmail ? (
-                  <p className="truncate text-xs text-muted-foreground leading-tight">
+                  <p className="truncate text-xs leading-tight text-muted-foreground">
                     {userEmail}
                   </p>
                 ) : null}
@@ -188,13 +180,9 @@ export function DashboardSidebar({
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto scrollbar-thin px-3 py-4">
+            <nav className="scrollbar-thin flex-1 overflow-y-auto px-3 py-4">
               {dashboardNav.map((section) => (
-                <SidebarSection
-                  key={section.title}
-                  section={section}
-                  pathname={pathname}
-                />
+                <SidebarSection key={section.title} section={section} pathname={pathname} />
               ))}
             </nav>
 
@@ -202,16 +190,12 @@ export function DashboardSidebar({
             <div className="border-t border-border p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
-                  {userName?.charAt(0)?.toUpperCase() ??
-                    userEmail?.charAt(0)?.toUpperCase() ??
-                    "U"}
+                  {userName?.charAt(0)?.toUpperCase() ?? userEmail?.charAt(0)?.toUpperCase() ?? "U"}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium leading-tight">
-                    {userName ?? "User"}
-                  </p>
+                  <p className="truncate text-sm font-medium leading-tight">{userName ?? "User"}</p>
                   {userEmail ? (
-                    <p className="truncate text-xs text-muted-foreground leading-tight">
+                    <p className="truncate text-xs leading-tight text-muted-foreground">
                       {userEmail}
                     </p>
                   ) : null}
@@ -255,11 +239,7 @@ function SidebarSection({
       </h3>
       <div className="space-y-0.5">
         {section.items.map((item) => (
-          <SidebarLink
-            key={item.href}
-            item={item}
-            isActive={pathname === item.href}
-          />
+          <SidebarLink key={item.href} item={item} isActive={pathname === item.href} />
         ))}
       </div>
     </div>
@@ -270,13 +250,7 @@ function SidebarSection({
    Individual nav link
    ────────────────────────────────────────────── */
 
-function SidebarLink({
-  item,
-  isActive,
-}: {
-  item: NavItem;
-  isActive: boolean;
-}): React.JSX.Element {
+function SidebarLink({ item, isActive }: { item: NavItem; isActive: boolean }): React.JSX.Element {
   const Icon = resolveIcon(item.icon);
   const disabled = item.isDisabled === true;
 
@@ -314,11 +288,7 @@ function SidebarLink({
    Uses a custom DOM event to avoid prop drilling.
    ────────────────────────────────────────────── */
 
-function MobileSidebarTrigger({
-  onOpen,
-}: {
-  onOpen: () => void;
-}): null {
+function MobileSidebarTrigger({ onOpen }: { onOpen: () => void }): null {
   React.useEffect(() => {
     const handler = (): void => onOpen();
     window.addEventListener("growpilot:open-sidebar", handler);

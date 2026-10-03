@@ -37,9 +37,7 @@ export default async function SeoAuditPage(): Promise<React.JSX.Element> {
           <Search className="h-4 w-4" />
           SEO Audit
         </div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          SEO Audit
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">SEO Audit</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Analyze your website for SEO issues and get actionable recommendations.
         </p>

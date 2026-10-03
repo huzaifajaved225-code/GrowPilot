@@ -15,11 +15,11 @@ function errorFromStatus(status: number, body: string): ProviderError {
   if (status === 401 || status === 403) return ProviderError.unauthorized(pid);
   if (status === 429) return ProviderError.rateLimited(pid);
   if (status >= 500) return ProviderError.unavailable(pid, status);
-  return new ProviderError(
-    `Gemini API returned ${status}: ${body.slice(0, 200)}`,
-    pid,
-    { httpStatus: status, code: "PROVIDER_ERROR", details: { providerKeyStatus: "configured" } },
-  );
+  return new ProviderError(`Gemini API returned ${status}: ${body.slice(0, 200)}`, pid, {
+    httpStatus: status,
+    code: "PROVIDER_ERROR",
+    details: { providerKeyStatus: "configured" },
+  });
 }
 
 /**
@@ -94,7 +94,11 @@ export class GeminiAdapter implements IAIProvider {
 
     let parsed: {
       candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
-      usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number; totalTokenCount?: number };
+      usageMetadata?: {
+        promptTokenCount?: number;
+        candidatesTokenCount?: number;
+        totalTokenCount?: number;
+      };
       modelVersion?: string;
     };
 
@@ -104,10 +108,7 @@ export class GeminiAdapter implements IAIProvider {
       throw ProviderError.malformedResponse(KNOWN_PROVIDERS.GEMINI, "Invalid JSON");
     }
 
-    const text =
-      parsed.candidates?.[0]?.content?.parts
-        ?.map((p) => p.text ?? "")
-        .join("") ?? "";
+    const text = parsed.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
 
     if (!text && (!parsed.candidates || parsed.candidates.length === 0)) {
       throw ProviderError.malformedResponse(KNOWN_PROVIDERS.GEMINI, "No candidates in response");

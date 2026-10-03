@@ -70,7 +70,9 @@ function detectJsonLd($: CheerioAPI, results: ExistingStructuredData[]): void {
 function detectMicrodata($: CheerioAPI, results: ExistingStructuredData[]): void {
   $("[itemscope]").each((_i, el) => {
     const itemType = $(el).attr("itemtype") || null;
-    const schemaType = itemType ? itemType.replace("https://schema.org/", "").replace("http://schema.org/", "") : null;
+    const schemaType = itemType
+      ? itemType.replace("https://schema.org/", "").replace("http://schema.org/", "")
+      : null;
 
     results.push({
       type: "microdata",

@@ -6,13 +6,33 @@
 
 import type { SchemaValidationResult } from "@/ai-core/tools/schema-builder/types";
 
-
 const KNOWN_SCHEMA_TYPES: ReadonlySet<string> = new Set([
-  "Organization", "LocalBusiness", "Restaurant", "Store", "Service",
-  "Product", "SoftwareApplication", "Article", "Person", "WebSite", "WebPage",
-  "BlogPosting", "NewsArticle", "Event", "FAQPage", "HowTo", "BreadcrumbList",
-  "Review", "AggregateRating", "Offer", "Place", "PostalAddress", "ImageObject",
-  "VideoObject", "SearchAction", "ContactPoint",
+  "Organization",
+  "LocalBusiness",
+  "Restaurant",
+  "Store",
+  "Service",
+  "Product",
+  "SoftwareApplication",
+  "Article",
+  "Person",
+  "WebSite",
+  "WebPage",
+  "BlogPosting",
+  "NewsArticle",
+  "Event",
+  "FAQPage",
+  "HowTo",
+  "BreadcrumbList",
+  "Review",
+  "AggregateRating",
+  "Offer",
+  "Place",
+  "PostalAddress",
+  "ImageObject",
+  "VideoObject",
+  "SearchAction",
+  "ContactPoint",
 ]);
 
 /**
@@ -89,7 +109,12 @@ export function validateSchema(schema: Record<string, unknown>): SchemaValidatio
   }
 
   // 6. Check for duplicate/conflicting fields
-  if (schema["address"] && schema["location"] && typeof schema["address"] === "string" && typeof schema["location"] === "string") {
+  if (
+    schema["address"] &&
+    schema["location"] &&
+    typeof schema["address"] === "string" &&
+    typeof schema["location"] === "string"
+  ) {
     warnings.push("Both address and location are specified as strings, which may be conflicting");
   }
 

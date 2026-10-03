@@ -33,9 +33,10 @@ export interface StoredTurn {
  * @typeParam TPayload - The shape of the target agent's input payload.
  * @typeParam TResult - The shape of the target agent's result payload.
  */
-export class StoreMemoryStage<TPayload, TResult>
-  implements IPipelineStage<PipelinePayload<TPayload, TResult>, PipelinePayload<TPayload, TResult>>
-{
+export class StoreMemoryStage<TPayload, TResult> implements IPipelineStage<
+  PipelinePayload<TPayload, TResult>,
+  PipelinePayload<TPayload, TResult>
+> {
   /** @inheritdoc */
   public readonly name = PipelineStageName.STORE_MEMORY;
 

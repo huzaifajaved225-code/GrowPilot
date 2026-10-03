@@ -23,9 +23,7 @@ function slugify(text: string): string {
 export class MockLeadDataProvider implements ILeadDataProvider {
   public readonly providerId = "mock-development-provider";
 
-  public async discoverLeads(
-    criteria: LeadDiscoveryCriteria,
-  ): Promise<DiscoveredLeadCandidate[]> {
+  public async discoverLeads(criteria: LeadDiscoveryCriteria): Promise<DiscoveredLeadCandidate[]> {
     const { industry, location, targetCustomer, count = 10 } = criteria;
     const requestedCount = Math.min(Math.max(count, 1), 30);
 
@@ -91,7 +89,8 @@ export class MockLeadDataProvider implements ILeadDataProvider {
       const suffix = businessSuffixes[i % businessSuffixes.length] ?? "Solutions";
       const businessName = `${prefix} ${industry.trim()} ${suffix}`;
       const domain = `${slugify(prefix)}-${slugify(industry.slice(0, 15))}.com`;
-      const description = painPoints[i % painPoints.length] ?? "Needs growth and search optimization.";
+      const description =
+        painPoints[i % painPoints.length] ?? "Needs growth and search optimization.";
 
       leads.push({
         businessName,

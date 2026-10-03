@@ -20,9 +20,10 @@ export const CONVERSATION_MEMORY_SCRATCHPAD_KEY = "ai-core.conversationMemory";
  * @typeParam TPayload - The shape of the target agent's input payload.
  * @typeParam TResult - The shape of the target agent's result payload.
  */
-export class LoadMemoryStage<TPayload, TResult>
-  implements IPipelineStage<PipelinePayload<TPayload, TResult>, PipelinePayload<TPayload, TResult>>
-{
+export class LoadMemoryStage<TPayload, TResult> implements IPipelineStage<
+  PipelinePayload<TPayload, TResult>,
+  PipelinePayload<TPayload, TResult>
+> {
   /** @inheritdoc */
   public readonly name = PipelineStageName.LOAD_MEMORY;
 

@@ -19,53 +19,52 @@ import { prisma } from "@/lib/db/prisma";
    ────────────────────────────────────────────── */
 
 async function getDashboardData(organizationId: string) {
-  const [projects, latestSeoAudit, latestGeoInsight, recentActivity] =
-    await Promise.all([
-      // All active projects for this org
-      prisma.project.findMany({
-        where: { organizationId, deletedAt: null },
-        select: { id: true, name: true, websiteUrl: true },
-        orderBy: { createdAt: "desc" },
-        take: 10,
-      }),
+  const [projects, latestSeoAudit, latestGeoInsight, recentActivity] = await Promise.all([
+    // All active projects for this org
+    prisma.project.findMany({
+      where: { organizationId, deletedAt: null },
+      select: { id: true, name: true, websiteUrl: true },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    }),
 
-      // Latest completed SEO audit score across all org projects
-      prisma.seoAudit.findFirst({
-        where: {
-          project: { organizationId },
-          status: "COMPLETED",
-          score: { not: null },
-        },
-        select: { score: true, performedAt: true },
-        orderBy: { performedAt: "desc" },
-      }),
+    // Latest completed SEO audit score across all org projects
+    prisma.seoAudit.findFirst({
+      where: {
+        project: { organizationId },
+        status: "COMPLETED",
+        score: { not: null },
+      },
+      select: { score: true, performedAt: true },
+      orderBy: { performedAt: "desc" },
+    }),
 
-      // Latest GEO insight visibility score across all org projects
-      prisma.geoInsight.findFirst({
-        where: {
-          project: { organizationId },
-          visibilityScore: { not: null },
-        },
-        select: { visibilityScore: true, checkedAt: true },
-        orderBy: { checkedAt: "desc" },
-      }),
+    // Latest GEO insight visibility score across all org projects
+    prisma.geoInsight.findFirst({
+      where: {
+        project: { organizationId },
+        visibilityScore: { not: null },
+      },
+      select: { visibilityScore: true, checkedAt: true },
+      orderBy: { checkedAt: "desc" },
+    }),
 
-      // Recent audits + insights for the activity feed
-      prisma.seoAudit.findMany({
-        where: {
-          project: { organizationId },
-          status: "COMPLETED",
-        },
-        select: {
-          id: true,
-          url: true,
-          score: true,
-          performedAt: true,
-        },
-        orderBy: { performedAt: "desc" },
-        take: 5,
-      }),
-    ]);
+    // Recent audits + insights for the activity feed
+    prisma.seoAudit.findMany({
+      where: {
+        project: { organizationId },
+        status: "COMPLETED",
+      },
+      select: {
+        id: true,
+        url: true,
+        score: true,
+        performedAt: true,
+      },
+      orderBy: { performedAt: "desc" },
+      take: 5,
+    }),
+  ]);
 
   return { projects, latestSeoAudit, latestGeoInsight, recentActivity };
 }
@@ -95,9 +94,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             <Sparkles className="h-4 w-4" />
             AI Growth Operating System
           </div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Welcome to GrowPilot
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Welcome to GrowPilot</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             {projectName
               ? `Managing growth for ${projectName}.`
@@ -151,9 +148,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
           <div className="border-b border-border p-4 sm:p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-semibold">
-                  AI Growth Command Center
-                </h2>
+                <h2 className="text-lg font-semibold">AI Growth Command Center</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Your AI growth agents are ready.
                 </p>
@@ -210,9 +205,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                     <p className="truncate text-sm font-medium">
                       SEO audit — score {audit.score ?? "pending"}
                     </p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {audit.url}
-                    </p>
+                    <p className="truncate text-xs text-muted-foreground">{audit.url}</p>
                     <p className="text-xs text-muted-foreground">
                       {audit.performedAt.toLocaleDateString()}
                     </p>
@@ -306,9 +299,7 @@ function MetricCard({
       </div>
       <p className="mt-4 text-sm text-muted-foreground">{title}</p>
       <p className="mt-1 text-3xl font-bold">{value}</p>
-      {hint ? (
-        <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
-      ) : null}
+      {hint ? <p className="mt-1 text-xs text-muted-foreground">{hint}</p> : null}
     </div>
   );
 }

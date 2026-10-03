@@ -86,7 +86,11 @@ export function validateUrl(rawUrl: string): UrlValidationResult {
   // Check IPv4
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(hostname)) {
     if (isPrivateIPv4(hostname)) {
-      return { valid: false, url: null, error: "Access to private network addresses is not allowed" };
+      return {
+        valid: false,
+        url: null,
+        error: "Access to private network addresses is not allowed",
+      };
     }
   }
 

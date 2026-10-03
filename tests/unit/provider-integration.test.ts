@@ -1,7 +1,12 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ProviderManager } from "@/lib/ai/provider-manager";
 import { ProviderError } from "@/lib/ai/provider-error";
-import { providerId, type AIProviderRequest, type AIProviderResponse, type ProviderId } from "@/lib/ai/provider.types";
+import {
+  providerId,
+  type AIProviderRequest,
+  type AIProviderResponse,
+  type ProviderId,
+} from "@/lib/ai/provider.types";
 import type { IAIProvider } from "@/lib/ai/provider.interface";
 import type { AIProviderConfig } from "@/lib/ai/provider-config";
 
@@ -105,14 +110,14 @@ describe("ProviderManager", () => {
   describe("provider context injection", () => {
     it("is injectable into execution context via IAIProviderManager interface", () => {
       const primary = createMockProvider(providerId("mock-primary"), MOCK_RESPONSE);
-      const providers = new Map<ProviderId, IAIProvider>([
-        [providerId("mock-primary"), primary],
-      ]);
+      const providers = new Map<ProviderId, IAIProvider>([[providerId("mock-primary"), primary]]);
 
       const manager = new ProviderManager({ config: TEST_CONFIG, providers });
 
       // Verify ProviderManager satisfies IAIProviderManager structurally
-      const managerAsInterface: { generateText(r: AIProviderRequest): Promise<AIProviderResponse> } = manager;
+      const managerAsInterface: {
+        generateText(r: AIProviderRequest): Promise<AIProviderResponse>;
+      } = manager;
       expect(typeof managerAsInterface.generateText).toBe("function");
     });
   });
@@ -205,9 +210,9 @@ describe("ProviderManager", () => {
         id: providerId("mock-primary"),
         name: "Slow",
         isAvailable: () => true,
-        generateText: vi.fn().mockImplementation(
-          () => new Promise((resolve) => setTimeout(resolve, 10_000)),
-        ),
+        generateText: vi
+          .fn()
+          .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 10_000))),
       };
 
       const providers = new Map<ProviderId, IAIProvider>([
@@ -234,9 +239,7 @@ describe("ProviderManager", () => {
   describe("cancellation behavior", () => {
     it("propagates AbortSignal to the provider", async () => {
       const primary = createMockProvider(providerId("mock-primary"), MOCK_RESPONSE);
-      const providers = new Map<ProviderId, IAIProvider>([
-        [providerId("mock-primary"), primary],
-      ]);
+      const providers = new Map<ProviderId, IAIProvider>([[providerId("mock-primary"), primary]]);
 
       const manager = new ProviderManager({ config: TEST_CONFIG, providers });
       const controller = new AbortController();
@@ -259,9 +262,7 @@ describe("ProviderManager", () => {
         ProviderError.rateLimited(providerId("mock-primary")),
       );
 
-      const providers = new Map<ProviderId, IAIProvider>([
-        [providerId("mock-primary"), primary],
-      ]);
+      const providers = new Map<ProviderId, IAIProvider>([[providerId("mock-primary"), primary]]);
 
       const noFallbackConfig: AIProviderConfig = {
         ...TEST_CONFIG,

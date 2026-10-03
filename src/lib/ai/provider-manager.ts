@@ -134,10 +134,8 @@ export class ProviderManager {
 
     return withRetry(
       () =>
-        withTimeout(
-          provider.generateText(request),
-          this.config.requestTimeoutMs,
-          () => ProviderError.unavailable(provider.id),
+        withTimeout(provider.generateText(request), this.config.requestTimeoutMs, () =>
+          ProviderError.unavailable(provider.id),
         ),
       {
         maxRetries: this.config.maxRetriesPerProvider,

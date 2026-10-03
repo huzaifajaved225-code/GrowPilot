@@ -1,6 +1,11 @@
 import { ToolError } from "@/ai-core/errors/tool-error";
 import type { ITool, IToolRegistry } from "@/ai-core/interfaces/tool.interface";
-import type { ToolDescriptor, ToolExecutionConfig, ToolInput, ToolOutput } from "@/ai-core/types/tool.types";
+import type {
+  ToolDescriptor,
+  ToolExecutionConfig,
+  ToolInput,
+  ToolOutput,
+} from "@/ai-core/types/tool.types";
 import { AI_CORE_DEFAULTS } from "@/ai-core/utils/constants";
 import { elapsedMs, nowMs } from "@/ai-core/utils/date-utils";
 import { withRetry, withTimeout } from "@/ai-core/utils/helpers";
@@ -142,7 +147,12 @@ export class ToolRegistry implements IToolRegistry {
     const { tool, config } = registration;
     const { descriptor } = tool;
 
-    if (!hasRequiredPermissions(descriptor.requiredPermissions, input.permissionContext.grantedPermissions)) {
+    if (
+      !hasRequiredPermissions(
+        descriptor.requiredPermissions,
+        input.permissionContext.grantedPermissions,
+      )
+    ) {
       throw ToolError.permissionDenied(descriptor.id, descriptor.requiredPermissions);
     }
 
@@ -153,10 +163,8 @@ export class ToolRegistry implements IToolRegistry {
 
     const output = await withRetry(
       async () => {
-        return withTimeout(
-          tool.execute(input.payload) as Promise<TOutput>,
-          config.timeoutMs,
-          () => ToolError.timeout(descriptor.id, config.timeoutMs),
+        return withTimeout(tool.execute(input.payload) as Promise<TOutput>, config.timeoutMs, () =>
+          ToolError.timeout(descriptor.id, config.timeoutMs),
         );
       },
       {

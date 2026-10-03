@@ -16,10 +16,7 @@ export function DashboardHeader({
   userEmail,
   userImage,
 }: DashboardHeaderProps): React.JSX.Element {
-  const initials =
-    userName?.charAt(0)?.toUpperCase() ??
-    userEmail?.charAt(0)?.toUpperCase() ??
-    "U";
+  const initials = userName?.charAt(0)?.toUpperCase() ?? userEmail?.charAt(0)?.toUpperCase() ?? "U";
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6 lg:px-8">
@@ -30,9 +27,7 @@ export function DashboardHeader({
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
             <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
           </div>
-          <span className="font-heading text-sm font-semibold">
-            {siteConfig.name}
-          </span>
+          <span className="font-heading text-sm font-semibold">{siteConfig.name}</span>
         </div>
       </div>
 
@@ -41,13 +36,9 @@ export function DashboardHeader({
         {/* User avatar + name (hidden on very small screens) */}
         <div className="hidden items-center gap-3 sm:flex">
           <div className="text-right">
-            <p className="text-sm font-medium leading-tight">
-              {userName ?? "User"}
-            </p>
+            <p className="text-sm font-medium leading-tight">{userName ?? "User"}</p>
             {userEmail ? (
-              <p className="text-xs text-muted-foreground leading-tight">
-                {userEmail}
-              </p>
+              <p className="text-xs leading-tight text-muted-foreground">{userEmail}</p>
             ) : null}
           </div>
           {userImage ? (

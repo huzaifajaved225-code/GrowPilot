@@ -4,7 +4,12 @@
  * Produces a GrowPilot analysis score (NOT a Google score).
  */
 
-import type { ExtractedMetadata, ExistingStructuredData, ReadabilityCheck, ReadabilityResult } from "@/ai-core/tools/schema-builder/types";
+import type {
+  ExtractedMetadata,
+  ExistingStructuredData,
+  ReadabilityCheck,
+  ReadabilityResult,
+} from "@/ai-core/tools/schema-builder/types";
 
 /**
  * Analyzes a page's search readability based on extracted metadata
@@ -49,9 +54,10 @@ export function analyzeReadability(
     id: "h1",
     label: "H1 heading",
     passed: metadata.headings.h1.length > 0,
-    detail: metadata.headings.h1.length > 0
-      ? metadata.headings.h1.length + " H1 heading(s) found"
-      : "No H1 heading detected",
+    detail:
+      metadata.headings.h1.length > 0
+        ? metadata.headings.h1.length + " H1 heading(s) found"
+        : "No H1 heading detected",
   });
 
   // 5. Meaningful text content
@@ -60,9 +66,10 @@ export function analyzeReadability(
     id: "content",
     label: "Page content",
     passed: textLength > 300,
-    detail: textLength > 300
-      ? "Page has " + textLength + " characters of text content"
-      : "Very little text content detected (" + textLength + " chars)",
+    detail:
+      textLength > 300
+        ? "Page has " + textLength + " characters of text content"
+        : "Very little text content detected (" + textLength + " chars)",
   });
 
   // 6. Robots meta (should not be noindex)
@@ -71,9 +78,7 @@ export function analyzeReadability(
     id: "robots",
     label: "Indexable",
     passed: !isNoIndex,
-    detail: isNoIndex
-      ? "Page has noindex directive"
-      : "Page appears indexable by search engines",
+    detail: isNoIndex ? "Page has noindex directive" : "Page appears indexable by search engines",
   });
 
   // 7. Structured data exists
@@ -125,9 +130,10 @@ export function analyzeReadability(
     id: "social",
     label: "Social profiles",
     passed: metadata.socialProfiles.length > 0,
-    detail: metadata.socialProfiles.length > 0
-      ? metadata.socialProfiles.length + " social profile link(s) found"
-      : "No social profile links detected",
+    detail:
+      metadata.socialProfiles.length > 0
+        ? metadata.socialProfiles.length + " social profile link(s) found"
+        : "No social profile links detected",
   });
 
   // 12. Language set
@@ -135,7 +141,9 @@ export function analyzeReadability(
     id: "language",
     label: "Page language",
     passed: metadata.language !== null,
-    detail: metadata.language ? "Language set: " + metadata.language : "No language attribute on <html>",
+    detail: metadata.language
+      ? "Language set: " + metadata.language
+      : "No language attribute on <html>",
   });
 
   // Calculate score

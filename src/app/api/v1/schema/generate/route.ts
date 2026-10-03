@@ -22,10 +22,20 @@ import type { SchemaType, SchemaGenerateResponse } from "@/ai-core/tools/schema-
 
 const schemaRequestSchema = z.object({
   url: z.string().min(1, "URL is required").url("Must be a valid URL"),
-  businessType: z.enum([
-    "auto", "Organization", "LocalBusiness", "Restaurant", "Store",
-    "Service", "Product", "SoftwareApplication", "Article", "Person",
-  ]).default("auto"),
+  businessType: z
+    .enum([
+      "auto",
+      "Organization",
+      "LocalBusiness",
+      "Restaurant",
+      "Store",
+      "Service",
+      "Product",
+      "SoftwareApplication",
+      "Article",
+      "Person",
+    ])
+    .default("auto"),
 });
 
 /**
@@ -101,15 +111,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
 
     // 6. Prepare metadata summary for AI
-    const metadataSummary = JSON.stringify({
-      title: metadata.title,
-      description: metadata.description,
-      headings: metadata.headings,
-      openGraph: metadata.openGraph,
-      contact: metadata.contact,
-      socialProfiles: metadata.socialProfiles,
-      textExcerpt: metadata.textContent.slice(0, 2000),
-    }, null, 2);
+    const metadataSummary = JSON.stringify(
+      {
+        title: metadata.title,
+        description: metadata.description,
+        headings: metadata.headings,
+        openGraph: metadata.openGraph,
+        contact: metadata.contact,
+        socialProfiles: metadata.socialProfiles,
+        textExcerpt: metadata.textContent.slice(0, 2000),
+      },
+      null,
+      2,
+    );
 
     const existingSchemaSummary = existingSchema
       .filter((s) => s.valid)
@@ -227,7 +241,6 @@ function generateFallbackSchema(
  * Registers schema-generation prompt templates if not already registered.
  */
 function registerSchemaPrompts(): void {
-
   const registeredTemplates = sharedPromptManager.listTemplates();
 
   if (!registeredTemplates.has("schema-generation.system")) {
@@ -261,7 +274,13 @@ function registerSchemaPrompts(): void {
         "Existing structured data:\n{{existingSchema}}\n\n" +
         "Missing information: {{missingInformation}}\n\n" +
         "Generate the most appropriate JSON-LD schema based ONLY on the evidence above.",
-      requiredVariables: ["websiteUrl", "businessType", "extractedMetadata", "existingSchema", "missingInformation"],
+      requiredVariables: [
+        "websiteUrl",
+        "businessType",
+        "extractedMetadata",
+        "existingSchema",
+        "missingInformation",
+      ],
       createdAt: nowIso(),
       metadata: { source: "schema-builder" },
     });

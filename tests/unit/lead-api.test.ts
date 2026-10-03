@@ -96,7 +96,7 @@ describe("Lead Provider and Service", () => {
     ].join(",");
 
     expect(row).toBe(
-      '"Nexus Marketing Group","Marketing","Karachi","https://nexus-marketing.com","85","HOT","Needs SEO","SEO Audit","High conversion lead","Send email"'
+      '"Nexus Marketing Group","Marketing","Karachi","https://nexus-marketing.com","85","HOT","Needs SEO","SEO Audit","High conversion lead","Send email"',
     );
   });
 });

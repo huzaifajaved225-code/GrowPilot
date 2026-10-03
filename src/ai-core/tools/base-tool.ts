@@ -34,9 +34,10 @@ import type { ToolDescriptor } from "@/ai-core/types/tool.types";
  * }
  * ```
  */
-export abstract class BaseTool<TInput = unknown, TOutput = unknown>
-  implements ITool<TInput, TOutput>
-{
+export abstract class BaseTool<TInput = unknown, TOutput = unknown> implements ITool<
+  TInput,
+  TOutput
+> {
   /** Static identity metadata for this tool. Every concrete tool must define its own. */
   public abstract readonly descriptor: ToolDescriptor;
 

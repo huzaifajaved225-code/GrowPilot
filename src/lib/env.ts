@@ -23,7 +23,10 @@ const envSchema = z.object({
   AUTH_GOOGLE_ID: z.string().optional(),
   AUTH_GOOGLE_SECRET: z.string().optional(),
 
-  EMAIL_FROM: z.string().regex(/^(?:.+<.+@.+>|\S+@\S+)$/).optional(),
+  EMAIL_FROM: z
+    .string()
+    .regex(/^(?:.+<.+@.+>|\S+@\S+)$/)
+    .optional(),
   RESEND_API_KEY: z.string().optional(),
 
   STRIPE_SECRET_KEY: z.string().optional(),

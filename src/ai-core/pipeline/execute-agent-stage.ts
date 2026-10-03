@@ -18,9 +18,10 @@ import { PipelineStageName } from "@/ai-core/types/pipeline.types";
  * @typeParam TPayload - The shape of the target agent's input payload.
  * @typeParam TResult - The shape of the target agent's result payload.
  */
-export class ExecuteAgentStage<TPayload, TResult>
-  implements IPipelineStage<PipelinePayload<TPayload, TResult>, PipelinePayload<TPayload, TResult>>
-{
+export class ExecuteAgentStage<TPayload, TResult> implements IPipelineStage<
+  PipelinePayload<TPayload, TResult>,
+  PipelinePayload<TPayload, TResult>
+> {
   /** @inheritdoc */
   public readonly name = PipelineStageName.EXECUTE_AGENT;
 

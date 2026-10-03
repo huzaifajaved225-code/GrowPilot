@@ -68,7 +68,9 @@ function createMockContext(responseText: string): IExecutionContext {
   } as unknown as IExecutionContext;
 }
 
-function createMockInput(overrides?: Partial<LeadQualificationInput>): AgentInput<LeadQualificationInput> {
+function createMockInput(
+  overrides?: Partial<LeadQualificationInput>,
+): AgentInput<LeadQualificationInput> {
   return {
     requestId: "test-req-lead-qualification" as never,
     identity: {
@@ -224,7 +226,8 @@ describe("LeadQualificationAgent", () => {
     const outreachCanned = JSON.stringify({
       channel: "email",
       subject: "Quick question regarding search visibility for Apex Dental",
-      message: "Hi Dr. Smith,\n\nI noticed Apex Dental has strong reviews but limited local organic visibility...",
+      message:
+        "Hi Dr. Smith,\n\nI noticed Apex Dental has strong reviews but limited local organic visibility...",
     });
 
     const agent = new LeadQualificationAgent();

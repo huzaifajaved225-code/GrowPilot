@@ -106,7 +106,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         typeof session === "object" &&
         "activeOrganizationId" in session
       ) {
-        const activeOrgId = (session as { activeOrganizationId?: string | null }).activeOrganizationId;
+        const activeOrgId = (session as { activeOrganizationId?: string | null })
+          .activeOrganizationId;
         if (activeOrgId && typeof token.id === "string") {
           const membership = await prisma.membership.findUnique({
             where: {
@@ -133,7 +134,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         session.user.globalRole = (token.globalRole as "USER" | "SUPERADMIN") ?? "USER";
         session.user.activeOrganizationId = (token.activeOrganizationId as string | null) ?? null;
-        session.user.activeOrganizationRole = (token.activeOrganizationRole as OrgRole | null) ?? null;
+        session.user.activeOrganizationRole =
+          (token.activeOrganizationRole as OrgRole | null) ?? null;
       }
       return session;
     },

@@ -1,9 +1,6 @@
 import { PromptError } from "@/ai-core/errors/prompt-error";
 import type { IPromptManager } from "@/ai-core/interfaces/prompt.interface";
-import {
-  interpolateTemplate,
-  validateTemplateVariables,
-} from "@/ai-core/prompts/prompt-template";
+import { interpolateTemplate, validateTemplateVariables } from "@/ai-core/prompts/prompt-template";
 import type {
   PromptTemplateDefinition,
   PromptVariables,
@@ -31,7 +28,8 @@ export class PromptManager implements IPromptManager {
 
   /** @inheritdoc */
   public registerTemplate(definition: PromptTemplateDefinition): void {
-    const versions = this.templates.get(definition.key) ?? new Map<number, PromptTemplateDefinition>();
+    const versions =
+      this.templates.get(definition.key) ?? new Map<number, PromptTemplateDefinition>();
 
     if (versions.has(definition.version)) {
       throw new PromptError(
@@ -88,7 +86,10 @@ export class PromptManager implements IPromptManager {
     const summary = new Map<string, readonly number[]>();
 
     for (const [key, versions] of this.templates.entries()) {
-      summary.set(key, [...versions.keys()].sort((a, b) => a - b));
+      summary.set(
+        key,
+        [...versions.keys()].sort((a, b) => a - b),
+      );
     }
 
     return summary;

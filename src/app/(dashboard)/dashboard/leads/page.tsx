@@ -21,9 +21,7 @@ export default async function LeadsPage(): Promise<React.JSX.Element> {
           <UserCheck className="h-4 w-4 text-primary" />
           <span>Marketing &amp; Growth / Lead Generation</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          AI Lead Generation
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">AI Lead Generation</h1>
         <p className="mt-2 max-w-3xl text-muted-foreground">
           Find, qualify and prioritize high-potential business leads with AI.
         </p>

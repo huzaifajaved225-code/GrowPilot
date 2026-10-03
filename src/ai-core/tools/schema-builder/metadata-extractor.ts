@@ -136,9 +136,7 @@ function extractContactSignals($: CheerioAPI, baseUrl: string): ExtractedMetadat
 
   // Logo and image
   const logo =
-    $('link[rel="logo"]').attr("href") ||
-    $('meta[property="og:image"]').attr("content") ||
-    null;
+    $('link[rel="logo"]').attr("href") || $('meta[property="og:image"]').attr("content") || null;
   const image = $('meta[property="og:image"]').attr("content") || null;
 
   // Opening hours
@@ -171,10 +169,8 @@ function extractContactSignals($: CheerioAPI, baseUrl: string): ExtractedMetadat
   });
 
   // Try to detect city/country from structured data or text
-  const city =
-    $('[itemprop="addressLocality"]').text().trim() || null;
-  const country =
-    $('[itemprop="addressCountry"]').text().trim() || null;
+  const city = $('[itemprop="addressLocality"]').text().trim() || null;
+  const country = $('[itemprop="addressCountry"]').text().trim() || null;
 
   return {
     businessName: businessName && businessName.length < 200 ? businessName : null,
@@ -194,9 +190,16 @@ function extractContactSignals($: CheerioAPI, baseUrl: string): ExtractedMetadat
 
 function extractSocialProfiles($: CheerioAPI): string[] {
   const socialDomains = [
-    "twitter.com", "x.com", "facebook.com", "fb.com",
-    "linkedin.com", "instagram.com", "youtube.com",
-    "github.com", "tiktok.com", "pinterest.com",
+    "twitter.com",
+    "x.com",
+    "facebook.com",
+    "fb.com",
+    "linkedin.com",
+    "instagram.com",
+    "youtube.com",
+    "github.com",
+    "tiktok.com",
+    "pinterest.com",
   ];
   const profiles: string[] = [];
 

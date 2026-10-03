@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { z } from "zod";
 
 /**
@@ -217,8 +217,8 @@ describe("POST /api/v1/ai/audit â€” Security", () => {
 
   it("client-controlled projectId does not bypass org ownership check", () => {
     // Simulate: user sends a projectId that belongs to another org
-    const userOrgId = "org-123";
-    const requestedProjectId = "proj-evil";
+    const _userOrgId = "org-123";
+    const _requestedProjectId = "proj-evil";
 
     // The API route queries: where: { id: requestedProjectId, organizationId: userOrgId }
     // If the project belongs to another org, the query returns null

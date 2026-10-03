@@ -19,7 +19,13 @@ const geoAuditRequestSchema = z.object({
   focusAreas: z
     .array(z.string().min(1))
     .min(1, "At least one focus area is required")
-    .default(["ai-visibility", "entity-understanding", "content-authority", "citations", "structured-data"]),
+    .default([
+      "ai-visibility",
+      "entity-understanding",
+      "content-authority",
+      "citations",
+      "structured-data",
+    ]),
   businessName: z.string().min(1).optional(),
 });
 
@@ -276,8 +282,8 @@ describe("POST /api/v1/ai/geo-audit â€” Security", () => {
   });
 
   it("client-controlled projectId does not bypass org ownership check", () => {
-    const userOrgId = "org-123";
-    const requestedProjectId = "proj-evil";
+    const _userOrgId = "org-123";
+    const _requestedProjectId = "proj-evil";
 
     // The API route queries: where: { id: requestedProjectId, organizationId: userOrgId }
     // If the project belongs to another org, the query returns null

@@ -55,6 +55,9 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "4mb",
     },
+    // Machine has only 2GB RAM: disables webpack filesystem cache and other
+    // dev-mode memory overhead so compilation does not exhaust system memory.
+    webpackMemoryOptimizations: true,
   },
   async headers() {
     return [
@@ -63,6 +66,16 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ];
+  },
+  webpack: (config, { dev }) => {
+    // The dev webpack filesystem cache gzips + serializes the module pack on
+    // every compile; on a 2GB RAM machine that allocation crashes the dev
+    // server (ERR_MEMORY_ALLOCATION_FAILED) and the packs fail to persist
+    // anyway. Disabling it trades cold-restart speed for stability.
+    if (dev) {
+      config.cache = false;
+    }
+    return config;
   },
   eslint: {
     ignoreDuringBuilds: false,

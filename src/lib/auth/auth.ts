@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
+import { z } from "zod";
 
 import { authConfig } from "@/lib/auth/auth.config";
 import { prisma } from "@/lib/db/prisma";
@@ -17,20 +20,64 @@ declare module "next-auth" {
       activeOrganizationRole: OrgRole | null;
     };
   }
-}
 
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    globalRole: "USER" | "SUPERADMIN";
-    activeOrganizationId: string | null;
-    activeOrganizationRole: OrgRole | null;
+  interface User {
+    globalRole?: "USER" | "SUPERADMIN";
+    activeOrganizationId?: string | null;
+    activeOrganizationRole?: OrgRole | null;
   }
 }
+
+declare module "@auth/core/jwt" {
+  interface JWT {
+    id?: string;
+    globalRole?: "USER" | "SUPERADMIN";
+    activeOrganizationId?: string | null;
+    activeOrganizationRole?: OrgRole | null;
+  }
+}
+
+const credentialsSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
+  providers: [
+    ...(authConfig.providers ?? []),
+    Credentials({
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(rawCredentials) {
+        const parsed = credentialsSchema.safeParse(rawCredentials);
+        if (!parsed.success) return null;
+
+        const { email, password } = parsed.data;
+
+        const user = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (!user || !user.passwordHash) return null;
+        if (!user.emailVerified) return null;
+
+        const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+        if (!passwordMatches) return null;
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          globalRole: user.globalRole,
+        };
+      },
+    }),
+  ],
   callbacks: {
     ...authConfig.callbacks,
     async jwt({ token, user, trigger, session }) {
@@ -53,29 +100,41 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       // Allow the client to request an organization switch via `update()`.
-      if (trigger === "update" && session?.activeOrganizationId) {
-        const membership = await prisma.membership.findUnique({
-          where: {
-            userId_organizationId: {
-              userId: token.id,
-              organizationId: session.activeOrganizationId as string,
+      if (
+        trigger === "update" &&
+        session &&
+        typeof session === "object" &&
+        "activeOrganizationId" in session
+      ) {
+        const activeOrgId = (session as { activeOrganizationId?: string | null }).activeOrganizationId;
+        if (activeOrgId && typeof token.id === "string") {
+          const membership = await prisma.membership.findUnique({
+            where: {
+              userId_organizationId: {
+                userId: token.id,
+                organizationId: activeOrgId,
+              },
             },
-          },
-        });
+          });
 
-        if (membership) {
-          token.activeOrganizationId = membership.organizationId;
-          token.activeOrganizationRole = membership.role;
+          if (membership) {
+            token.activeOrganizationId = membership.organizationId;
+            token.activeOrganizationRole = membership.role;
+          }
         }
       }
 
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.globalRole = token.globalRole;
-      session.user.activeOrganizationId = token.activeOrganizationId;
-      session.user.activeOrganizationRole = token.activeOrganizationRole;
+      if (token) {
+        if (typeof token.id === "string") {
+          session.user.id = token.id;
+        }
+        session.user.globalRole = (token.globalRole as "USER" | "SUPERADMIN") ?? "USER";
+        session.user.activeOrganizationId = (token.activeOrganizationId as string | null) ?? null;
+        session.user.activeOrganizationRole = (token.activeOrganizationRole as OrgRole | null) ?? null;
+      }
       return session;
     },
   },

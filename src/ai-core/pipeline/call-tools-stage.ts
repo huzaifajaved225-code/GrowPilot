@@ -49,7 +49,9 @@ export class CallToolsStage<TPayload, TResult>
     context: IExecutionContext,
   ): Promise<PipelinePayload<TPayload, TResult>> {
     const pendingCalls =
-      (context.scratchpad.get(PENDING_TOOL_CALLS_SCRATCHPAD_KEY) as ToolInput[] | undefined) ?? [];
+      (context.scratchpad.get(PENDING_TOOL_CALLS_SCRATCHPAD_KEY) as
+        | ToolInput<unknown>[]
+        | undefined) ?? [];
 
     if (pendingCalls.length === 0) {
       return input;
@@ -60,7 +62,7 @@ export class CallToolsStage<TPayload, TResult>
       count: pendingCalls.length,
     });
 
-    const results: ToolOutput[] = [];
+    const results: ToolOutput<unknown>[] = [];
 
     for (const toolInput of pendingCalls) {
       const result = await context.tools.invoke(toolInput);

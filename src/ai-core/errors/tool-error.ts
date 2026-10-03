@@ -16,8 +16,23 @@ export class ToolError extends AIError {
    * @param details - Arbitrary structured debugging details.
    * @param retryable - Whether re-invoking the tool may succeed. Defaults to `false`.
    */
-  constructor(message: string, toolId?: string, details: Metadata = {}, retryable = false) {
-    super(message, "TOOL_ERROR", 500, { toolId, ...details }, retryable);
+  constructor(
+    message: string,
+    toolId?: string,
+    details: Metadata = {},
+    retryable = false,
+  ) {
+    super(
+      message,
+      "TOOL_ERROR",
+      500,
+      {
+        ...(toolId !== undefined ? { toolId } : {}),
+        ...details,
+      },
+      retryable,
+    );
+
     this.toolId = toolId;
   }
 
@@ -29,10 +44,13 @@ export class ToolError extends AIError {
    * @returns A new `ToolError` with a 404-equivalent status code.
    */
   public static notFound(toolId: string): ToolError {
-    const error = new ToolError(`Tool "${toolId}" is not registered`, toolId);
+    const error = new ToolError(
+      `Tool "${toolId}" is not registered`,
+      toolId,
+    );
+
     return Object.assign(error, { statusCode: 404 });
   }
-
   /**
    * Creates a {@link ToolError} for a caller lacking the permissions a
    * tool requires.
@@ -41,12 +59,18 @@ export class ToolError extends AIError {
    * @param requiredPermissions - The permission scopes the tool requires.
    * @returns A new `ToolError` with a 403-equivalent status code.
    */
-  public static permissionDenied(toolId: string, requiredPermissions: readonly string[]): ToolError {
+  public static permissionDenied(
+    toolId: string,
+    requiredPermissions: readonly string[],
+  ): ToolError {
     const error = new ToolError(
       `Missing required permissions to invoke tool "${toolId}": ${requiredPermissions.join(", ")}`,
       toolId,
-      { requiredPermissions },
+      {
+        requiredPermissions: [...requiredPermissions],
+      },
     );
+
     return Object.assign(error, { statusCode: 403 });
   }
 
@@ -76,12 +100,21 @@ export class ToolError extends AIError {
    * @param cause - The underlying error from the final attempt.
    * @returns A new `ToolError` describing the exhausted retries.
    */
-  public static retriesExhausted(toolId: string, attempts: number, cause: unknown): ToolError {
-    const causeMessage = cause instanceof Error ? cause.message : String(cause);
+  public static retriesExhausted(
+    toolId: string,
+    attempts: number,
+    cause: unknown,
+  ): ToolError {
+    const causeMessage =
+      cause instanceof Error ? cause.message : String(cause);
+
     return new ToolError(
       `Tool "${toolId}" failed after ${attempts} attempt(s): ${causeMessage}`,
       toolId,
-      { attempts, cause: causeMessage },
+      {
+        attempts,
+        cause: causeMessage,
+      },
     );
   }
 }

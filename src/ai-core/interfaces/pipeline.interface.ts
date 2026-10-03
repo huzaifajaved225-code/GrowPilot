@@ -4,7 +4,21 @@ import type { IPromptManager } from "@/ai-core/interfaces/prompt.interface";
 import type { IToolRegistry } from "@/ai-core/interfaces/tool.interface";
 import type { ExecutionIdentity } from "@/ai-core/types/agent.types";
 import type { Metadata, RequestId } from "@/ai-core/types/common.types";
-import type { PipelineTraceEntry } from "@/ai-core/types/pipeline.types";
+import type { PipelineStageName, PipelineTraceEntry } from "@/ai-core/types/pipeline.types";
+import type { AIProviderRequest, AIProviderResponse, ProviderId } from "@/lib/ai/provider.types";
+
+/**
+ * Minimal contract for an AI provider manager — the gateway agents use to
+ * call LLM providers. Defined in ai-core so the execution context can
+ * reference it without importing the concrete `ProviderManager` from
+ * `@/lib/ai`, keeping the dependency direction clean.
+ *
+ * The concrete {@link ProviderManager} from `@/lib/ai` satisfies this
+ * interface structurally.
+ */
+export interface IAIProviderManager {
+  generateText(request: AIProviderRequest, providerOverride?: ProviderId): Promise<AIProviderResponse>;
+}
 
 /**
  * The shared, request-scoped context threaded through every stage of
@@ -12,8 +26,9 @@ import type { PipelineTraceEntry } from "@/ai-core/types/pipeline.types";
  * Constructed once per request by the {@link AIEngine} via dependency
  * injection, giving every downstream consumer (agents, tools, pipeline
  * stages) access to the same logger, memory manager, prompt manager,
- * and tool registry without needing to import singletons directly —
- * this is what makes the whole engine unit-testable.
+ * provider manager, and tool registry without needing to import
+ * singletons directly — this is what makes the whole engine
+ * unit-testable.
  */
 export interface IExecutionContext {
   /** The unique identifier for this execution request. */
@@ -28,6 +43,8 @@ export interface IExecutionContext {
   readonly prompts: IPromptManager;
   /** The tool registry used to invoke tools during this request. */
   readonly tools: IToolRegistry;
+  /** The AI provider manager used to call LLM providers with timeout, retry, and fallback. */
+  readonly providerManager: IAIProviderManager;
   /** Mutable, request-scoped key/value bag for passing data between pipeline stages. */
   readonly scratchpad: Map<string, unknown>;
   /** Accumulated trace entries for every pipeline stage executed so far. */
@@ -55,7 +72,7 @@ export interface IExecutionContext {
  */
 export interface IPipelineStage<TIn, TOut> {
   /** The stage name, used for tracing and error attribution. */
-  readonly name: string;
+  readonly name: PipelineStageName;
 
   /**
    * Executes this stage's logic.
@@ -79,5 +96,6 @@ export interface ExecutionContextOptions {
   readonly memory: IMemoryManager;
   readonly prompts: IPromptManager;
   readonly tools: IToolRegistry;
+  readonly providerManager: IAIProviderManager;
   readonly metadata?: Metadata;
 }

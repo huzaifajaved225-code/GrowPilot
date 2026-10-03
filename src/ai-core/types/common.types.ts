@@ -66,22 +66,34 @@ export function fail<E = Error>(error: E): Result<never, E> {
  * configuration overrides (e.g. merging user-supplied agent config with
  * defaults) without losing type safety on nested objects.
  */
-export type DeepPartial<T> = T extends (infer U)[]
-  ? DeepPartial<U>[]
-  : T extends object
-    ? { [K in keyof T]?: DeepPartial<T[K]> }
-    : T;
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? DeepPartial<U>[]
+    : T[P] extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepPartial<U>>
+      : T[P] extends (...args: unknown[]) => unknown
+        ? T[P]
+        : T[P] extends object
+          ? DeepPartial<T[P]>
+          : T[P];
+};
 
 /**
  * Recursively makes every property of `T` readonly. Used to expose
  * internal state (execution context, configuration) to consumers
  * without allowing accidental mutation.
  */
-export type DeepReadonly<T> = T extends (infer U)[]
-  ? ReadonlyArray<DeepReadonly<U>>
-  : T extends object
-    ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
-    : T;
+export type DeepReadonly<T> = {
+  readonly [P in keyof T]: T[P] extends (infer U)[]
+    ? ReadonlyArray<DeepReadonly<U>>
+    : T[P] extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepReadonly<U>>
+      : T[P] extends (...args: unknown[]) => unknown
+        ? T[P]
+        : T[P] extends object
+          ? DeepReadonly<T[P]>
+          : T[P];
+};
 
 /**
  * A constructor type — used by the {@link AgentRegistry} and

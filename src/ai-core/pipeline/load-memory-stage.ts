@@ -55,7 +55,7 @@ export class LoadMemoryStage<TPayload, TResult>
       context.logger.debug("Memory loaded for request", {
         agentId: input.agentId,
         sessionId: identity.sessionId,
-        conversationId: identity.conversationId,
+        conversationId: identity.conversationId ?? null,
       });
 
       return input;

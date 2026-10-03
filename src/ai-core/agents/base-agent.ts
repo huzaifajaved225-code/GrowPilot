@@ -13,6 +13,7 @@ import type { Metadata } from "@/ai-core/types/common.types";
 import { AI_CORE_DEFAULTS } from "@/ai-core/utils/constants";
 import { elapsedMs, nowMs } from "@/ai-core/utils/date-utils";
 import { withRetry, withTimeout } from "@/ai-core/utils/helpers";
+import type { AIProviderRequest, AIProviderResponse } from "@/lib/ai/provider.types";
 
 /**
  * Fully-resolved {@link AgentConfig}, produced by merging a subclass's
@@ -142,6 +143,29 @@ export abstract class BaseAgent<TPayload = Metadata, TResult = Metadata>
     // Intentionally empty by default — subclasses override to persist results.
   }
 
+
+  /**
+   * Convenience helper that delegates an AI text-generation request to the
+   * provider manager available through the execution context. Concrete
+   * agents call this from their run() method instead of importing
+   * ProviderManager directly, preserving the dependency-injection
+   * pattern the engine enforces.
+   *
+   * The provider manager applies timeout, retry, and fallback
+   * transparently, so agents never need to implement those concerns
+   * themselves.
+   *
+   * @param request - The model, messages, and generation parameters.
+   * @param context - The shared execution context (provides the provider manager).
+   * @returns The normalized provider response.
+   * @throws {ProviderError} If all providers in the chain are exhausted.
+   */
+  protected generateText(
+    request: AIProviderRequest,
+    context: IExecutionContext,
+  ): Promise<AIProviderResponse> {
+    return context.providerManager.generateText(request);
+  }
   /**
    * Orchestrates the full lifecycle (`validate` -> `prepare` -> `run` ->
    * `finalize`) for a single execution, applying this agent's configured

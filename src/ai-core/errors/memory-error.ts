@@ -19,7 +19,16 @@ export class MemoryError extends AIError {
    * (most memory failures are transient adapter/connectivity issues).
    */
   constructor(message: string, scope?: MemoryScope, details: Metadata = {}, retryable = true) {
-    super(message, "MEMORY_ERROR", 500, { scope, ...details }, retryable);
+    super(
+  message,
+  "MEMORY_ERROR",
+  500,
+  {
+    ...(scope !== undefined ? { scope } : {}),
+    ...details,
+  },
+  retryable,
+);
     this.scope = scope;
   }
 

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 /**
  * Single source of truth for environment variables. Importing from
  * "@/lib/env" instead of using `process.env` directly guarantees every
@@ -9,9 +11,9 @@ import { z } from "zod";
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
-  AUTH_SECRET: z
-  .string()
-  .default("GrowPilotSuperSecretKey12345678901234567890"),
+  AUTH_SECRET: isProduction
+    ? z.string().min(1, "AUTH_SECRET is required in production")
+    : z.string().min(1).default("growpilot-dev-secret-key-at-least-32-chars-long"),
   AUTH_URL: z.string().url().optional(),
   AUTH_TRUST_HOST: z
     .string()
@@ -21,7 +23,7 @@ const envSchema = z.object({
   AUTH_GOOGLE_ID: z.string().optional(),
   AUTH_GOOGLE_SECRET: z.string().optional(),
 
-  EMAIL_FROM: z.string().email().optional(),
+  EMAIL_FROM: z.string().regex(/^(?:.+<.+@.+>|\S+@\S+)$/).optional(),
   RESEND_API_KEY: z.string().optional(),
 
   STRIPE_SECRET_KEY: z.string().optional(),
@@ -30,6 +32,7 @@ const envSchema = z.object({
 
   ANTHROPIC_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
 
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -38,6 +41,12 @@ const envSchema = z.object({
   REDIS_URL: z.string().optional(),
 
   SENTRY_DSN: z.string().optional(),
+  AI_DEFAULT_PROVIDER: z.string().optional(),
+  AI_FALLBACK_PROVIDERS: z.string().optional(),
+  AI_PROVIDER_TIMEOUT_MS: z.coerce.number().int().min(1000).optional(),
+  AI_PROVIDER_MAX_RETRIES: z.coerce.number().int().min(0).max(5).optional(),
+  AI_PROVIDER_RETRY_BACKOFF_MS: z.coerce.number().int().min(0).optional(),
+
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
 });
 

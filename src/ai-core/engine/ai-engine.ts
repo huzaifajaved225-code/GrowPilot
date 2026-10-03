@@ -4,6 +4,7 @@ import { ExecutionContext } from "@/ai-core/engine/execution-context";
 import type { IAIEngine, RunAgentOptions } from "@/ai-core/interfaces/engine.interface";
 import type { ILogger } from "@/ai-core/interfaces/logger.interface";
 import type { IMemoryManager } from "@/ai-core/interfaces/memory.interface";
+import type { IAIProviderManager } from "@/ai-core/interfaces/pipeline.interface";
 import type { IPromptManager } from "@/ai-core/interfaces/prompt.interface";
 import type { IAgentRegistry } from "@/ai-core/interfaces/registry.interface";
 import type { IToolRegistry } from "@/ai-core/interfaces/tool.interface";
@@ -15,6 +16,8 @@ import type { AgentId, DeepPartial, Metadata } from "@/ai-core/types/common.type
 import type { AgentInput, AgentOutput } from "@/ai-core/types/agent.types";
 import { generateRequestId } from "@/ai-core/utils/id-generator";
 import { defaultLogger } from "@/ai-core/utils/logger";
+
+import { ProviderManager } from "@/lib/ai/provider-manager";
 
 /**
  * Constructor dependencies for {@link AIEngine}. Every dependency is
@@ -35,6 +38,8 @@ export interface AIEngineOptions {
   readonly promptManager?: IPromptManager;
   /** Memory façade. Defaults to a fresh {@link MemoryManager} configured from `config.memory`. */
   readonly memoryManager?: IMemoryManager;
+  /** AI provider manager. Defaults to the process-wide `ProviderManager` singleton (lazy-imported to avoid circular deps). */
+  readonly providerManager?: IAIProviderManager;
   /** Root logger every request-scoped logger is derived from. Defaults to {@link defaultLogger}. */
   readonly logger?: ILogger;
 }
@@ -50,9 +55,9 @@ export interface AIEngineOptions {
  *   request (see {@link ExecutionContext}), never reusing state across
  *   requests.
  * - **Dependency injection**: every subsystem (agent registry, tool
- *   registry, prompt manager, memory manager, logger) is injected via
- *   {@link AIEngineOptions} rather than reached for as a bare import,
- *   with production-sensible singleton defaults.
+ *   registry, prompt manager, memory manager, provider manager,
+ *   logger) is injected via {@link AIEngineOptions} rather than reached
+ *   for as a bare import, with production-sensible singleton defaults.
  * - **Execution pipeline**: delegates the actual
  *   `INPUT -> ... -> RESULT` sequencing to {@link ExecutionPipeline},
  *   built once via {@link createDefaultPipeline}.
@@ -76,6 +81,8 @@ export class AIEngine implements IAIEngine {
   public readonly promptManager: IPromptManager;
   /** The memory façade available to every agent executed by this engine. */
   public readonly memoryManager: IMemoryManager;
+  /** The AI provider manager available to every agent executed by this engine. */
+  public readonly providerManager: IAIProviderManager;
 
   private readonly logger: ILogger;
   private readonly config: AICoreConfig;
@@ -97,6 +104,7 @@ export class AIEngine implements IAIEngine {
         conversationTtlMs: this.config.memory.conversationTtlMs,
         queryLimit: this.config.memory.queryLimit,
       });
+    this.providerManager = options.providerManager ?? AIEngine.defaultProviderManager();
   }
 
   /**
@@ -138,6 +146,7 @@ export class AIEngine implements IAIEngine {
       memory: this.memoryManager,
       prompts: this.promptManager,
       tools: this.toolRegistry,
+      providerManager: this.providerManager,
       metadata: options.metadata,
     });
 
@@ -175,5 +184,15 @@ export class AIEngine implements IAIEngine {
 
       throw error;
     }
+  }
+
+  /**
+   * Lazy-imports the concrete `ProviderManager` singleton to avoid a
+   * static circular dependency between `@/ai-core` and `@/lib/ai`.
+   * Called once during construction when no explicit `providerManager`
+   * is injected.
+   */
+  private static defaultProviderManager(): IAIProviderManager {
+    return ProviderManager.getInstance();
   }
 }

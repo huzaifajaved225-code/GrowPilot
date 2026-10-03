@@ -103,20 +103,21 @@ export function sleep(ms: number): Promise<void> {
  */
 export function deepMerge<T extends Record<string, unknown>>(base: T, override: DeepPartial<T>): T {
   const result: Record<string, unknown> = { ...base };
+  const overrideRecord = override as Record<string, unknown>;
 
-  for (const key of Object.keys(override) as (keyof T)[]) {
-    const overrideValue = override[key];
+  for (const key of Object.keys(overrideRecord)) {
+    const overrideValue = overrideRecord[key];
     const baseValue = base[key];
 
     if (overrideValue === undefined) continue;
 
     if (isPlainObject(overrideValue) && isPlainObject(baseValue)) {
-      result[key as string] = deepMerge(
+      result[key] = deepMerge(
         baseValue as Record<string, unknown>,
         overrideValue as DeepPartial<Record<string, unknown>>,
       );
     } else {
-      result[key as string] = overrideValue;
+      result[key] = overrideValue;
     }
   }
 

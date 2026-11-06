@@ -1,4 +1,4 @@
-# GrowPilot
+# Grovcentric OS 
 
 AI-powered business growth platform — SEO, GEO (Generative Engine Optimization), AEO (Answer
 Engine Optimization), AI content generation, analytics, website audits, Google Business Profile
